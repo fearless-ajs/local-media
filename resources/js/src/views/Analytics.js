@@ -13,9 +13,17 @@ import {
   Col,
 } from "react-bootstrap";
 
-import {toHumanString} from 'human-readable-numbers';
+import swal from 'sweetalert';
+import { toHumanString } from "human-readable-numbers";
 
 function Icons() {
+
+  const onExport = ()=>{
+    swal("Export Data", {
+      buttons: ["Image", "CSV"],
+    });
+  }
+
   return (
     <>
       <Container fluid>
