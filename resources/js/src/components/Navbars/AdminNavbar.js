@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, useRef, Component } from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
@@ -7,8 +7,8 @@ import routes from "../../routes.js";
 function Header() {
   const [searching, setSearching] = useState(false);
   const [query, setQuery] = useState("");
-  const location = useLocation();
 
+  const location = useLocation();
 
   //////////////////////////////////////////
   const mobileSidebarToggle = (e) => {
@@ -80,23 +80,22 @@ function Header() {
                 className="m-0"
                 onClick={()=>setSearching(true)}
               >
-                {searching ? (
-                  <>
-                    <input
-                      type="text"
-                      value={query}
-                      className="form-control"
-                      placeholder="Enter search keyword"
-                      onBlur={()=>setSearching(false)}
-                      onChange={(e)=>setQuery(e.target.value)}
-                    />
-                  </>
-                ) : (
-                  <>
+
+              {searching ?
+                (<input
+                  type="text"
+                  value={query}
+                  className="form-control"
+                  ref={(input)=>input && input.focus()}
+                  placeholder="Enter search keyword"
+                  onBlur={()=>setSearching(false)}
+                  onChange={(e)=>setQuery(e.target.value)}
+                />)
+                : (<>
                     <i className="nc-icon nc-zoom-split"></i>
                     <span className="d-lg-block"> Search</span>
-                  </>
-                )}
+                   </>)
+              }
               </Nav.Link>
             </Nav.Item>
 
