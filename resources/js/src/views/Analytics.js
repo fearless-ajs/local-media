@@ -19,7 +19,7 @@ import { toHumanString } from "human-readable-numbers";
 function Icons() {
 
   const onExport = ()=>{
-    swal("Export Data", {
+    swal("Export data in what format", {
       buttons: ["Image", "CSV"],
     });
   }
@@ -190,7 +190,7 @@ function Icons() {
                       <button className="btn btn-info">
                         <i className="fas fa-redo mr-1"></i> Update stats
                       </button>
-                      <button onClick={onExport} className="btn btn-info float-right">
+                      <button onClick={onExport} className="btn btn-primary float-right">
                         <i className="fas fa-file-export mr-1"></i> Export
                       </button>
                     </div>

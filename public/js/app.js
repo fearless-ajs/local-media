@@ -8690,7 +8690,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function Icons() {
   var onExport = function onExport() {
-    sweetalert__WEBPACK_IMPORTED_MODULE_2___default()("Export Data", {
+    sweetalert__WEBPACK_IMPORTED_MODULE_2___default()("Export data in what format", {
       buttons: ["Image", "CSV"]
     });
   };
@@ -8906,7 +8906,7 @@ function Icons() {
                       }), " Update stats"]
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
                       onClick: onExport,
-                      className: "btn btn-info float-right",
+                      className: "btn btn-primary float-right",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
                         className: "fas fa-file-export mr-1"
                       }), " Export"]
