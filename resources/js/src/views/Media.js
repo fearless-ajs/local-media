@@ -29,6 +29,7 @@ import img3 from "../assets/img/sidebar-3.jpg";
 import img1 from "../assets/img/sidebar-1.jpg";
 import img2 from "../assets/img/sidebar-2.jpg";
 
+import file_icon from '../assets/img/file-empty.js';
 
 function TableList() {
   const [showModal, setModal] = useState(false);
@@ -63,7 +64,10 @@ function TableList() {
                           <div className="media-view-count">  <i className="fa fa-eye"></i> {_.random(1,78)} </div>
                           <LazyLoadImage
                             className="img-fluid"
-                            src={_.sample([img1,img2,img3,img4,img5])}
+                            src={_.sample([img1,img2,img3,img4,img5, ""])}
+                            onError={(ev)=>{
+                              ev.target.src = file_icon;
+                            }}
                           />
                         </Card.Body>
 
