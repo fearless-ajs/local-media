@@ -2,6 +2,9 @@ import React, { useState, useRef, Component } from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
+import swal from 'sweetalert';
+import Cookies from 'js-cookie';
+
 import routes from "../../routes.js";
 
 function Header() {
@@ -32,6 +35,20 @@ function Header() {
     return "Dashboard";
   };
   //////////////////////////////////////////
+
+
+  /////////LOGOUT//////////////
+  const Logout = e => {
+    e.preventDefault();
+    swal("Logout?")
+    .then(l => {
+      if (l) {
+        Cookies.remove("AUTH_TOKEN");
+        window.location.reload();
+      }
+    });
+  }
+  /////////////////////////////
 
 
   return (
@@ -106,7 +123,7 @@ function Header() {
               <Nav.Link
                 className="m-0"
                 href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                onClick={Logout}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>

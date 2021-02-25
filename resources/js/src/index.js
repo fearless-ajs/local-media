@@ -27,11 +27,15 @@ import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import AdminLayout from "./layouts/Admin.js";
+import AuthLayout from "./layouts/Auth.js";
+
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+      <Route path="/login" render={(props) => <AuthLayout {...props} /> } />
+
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </BrowserRouter>,
