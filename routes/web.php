@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,15 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
+Route::get('/login', [AuthController::class, 'loginView'])->name('login');
 
 
-Route::fallback(function () {
-    return view('index');
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/', function () {
+        return view('index');
+    })->name('dashboard');
+
+
+    Route::fallback(function () {
+        return view('index');
+    });
+
 });
+

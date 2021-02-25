@@ -16,6 +16,15 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], function () {
+    // auth
+    Route::post('login', [AuthController::class, 'login']);
+
+    // protected routes
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('test', function () {
+            return response(123);
+        });
+    });
 });
