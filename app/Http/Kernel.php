@@ -4,6 +4,9 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
+use Illuminate\Routing\Router;
+use Illuminate\Contracts\Foundation\Application;
+
 class Kernel extends HttpKernel
 {
     /**
@@ -69,4 +72,12 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\Cors::class,
         'forceSSL' => \App\Http\Middleware\Https::class,
     ];
+
+
+    public function __construct(Application $app, Router $router) {
+        parent::__construct( $app, $router );
+
+        // prioritize ForceJsonResponse in case that other middleware terminated the request before the middleware took action
+        $this->prependToMiddlewarePriority(\App\Http\Middleware\ForceJsonResponse::class);
+    }
 }
