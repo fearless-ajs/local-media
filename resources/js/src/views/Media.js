@@ -46,7 +46,20 @@ function TableList() {
     }
     if (error) data = [];
 
+    // Pagination
+
     const [activePage, setActivePage] = useState(0);
+    //
+    const media_per_page = 20;
+    const total_data_length = data ? data.length : 0;
+
+    // paginate data
+    if (data && data.length) {
+        const begin = activePage * media_per_page,
+            end = begin + media_per_page;
+
+        data = data.slice(begin, end);
+    }
 
 
     return (
@@ -95,7 +108,7 @@ function TableList() {
                                                                     <i className="fa fa-eye"></i>
                                                                     {media.views}
                                                                 </div>
-                                                                {/* TODO: check if pdf or video, replace with special component */}
+                                                                {/* TODO: check if pdf or video, replace with image icon / pdf icon */}
                                                                 <LazyLoadImage
                                                                     className="img-fluid"
                                                                     src={`storage/${media.path}`}
@@ -121,21 +134,24 @@ function TableList() {
 
                                 <div className="ml-3">
                                     <Pagination>
-{/*                                        {Array.from(
-                                            { length: data.length / 4 },
-                                            (_, i) => i
-                                        ).map((id, i) => (
-                                            <Pagination.Item
-                                                key={id}
-                                                active={i === activePage}
-                                                onClick={() =>
-                                                    setActivePage(id)
-                                                }
-                                            >
-                                                {id + 1}
-                                            </Pagination.Item>
-                                        ))}
-*/}                                    </Pagination>
+                                        {
+                                            data && data.length
+                                            ? (
+                                                Array
+                                                .from({length: total_data_length / media_per_page}, (_, i)=>i)
+                                                .map((id) => (
+                                                    <Pagination.Item
+                                                        key={id}
+                                                        active={id === activePage}
+                                                        onClick={() => setActivePage(id)}
+                                                    >
+                                                        {id + 1}
+                                                    </Pagination.Item>
+                                                ))
+                                            )
+                                            : <></>
+                                        }
+                                    </Pagination>
                                 </div>
                             </Card.Body>
                         </Card>
