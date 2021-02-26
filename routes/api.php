@@ -48,8 +48,18 @@ Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], funct
         Route::post('media/{id}/bounce', [App\Http\Controllers\API\MediaController::class, 'media_bounce'])->name('media_bounce');
         Route::post('media/{id}/engage', [App\Http\Controllers\API\MediaController::class, 'media_engage'])->name('media_engage');
         //
+        Route::get('media/{id}/distributors', [App\Http\Controllers\API\AnalyticsController::class, 'getDistributors'])->name('get_distributors');
+        // 
         Route::delete('media/{id}', [App\Http\Controllers\API\MediaController::class, 'deleteMedia'])->name('delete_media');
 
+
+        /////////////////////////
+        // AnalyticsController //
+        /////////////////////////
+        Route::get('analytics/stats', [App\Http\Controllers\API\AnalyticsController::class, 'getTotalStats'])->name('get_stats');
+        Route::get('analytics/behaviours', [App\Http\Controllers\API\AnalyticsController::class, 'getUsersBehaviour'])->name('get_behaviour');
+        Route::get('analytics/distributors', [App\Http\Controllers\API\AnalyticsController::class, 'getDistributors'])->name('get_distributors');
+        Route::get('analytics/performance', [App\Http\Controllers\API\AnalyticsController::class, 'getPerformance'])->name('get_performance');
 
 
         Route::get('test', function () {
