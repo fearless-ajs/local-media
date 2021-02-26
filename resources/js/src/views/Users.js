@@ -30,6 +30,7 @@ function User() {
     const [showNewUserModal, setNewUserModal] = useState(false);
     const [showUserModal, setUserModal] = useState(false);
 
+    // fetch from backend
     let { data, error, mutate } = useSWR("/api/users", fetcher);
     let isLoading = !data & !error;
 
