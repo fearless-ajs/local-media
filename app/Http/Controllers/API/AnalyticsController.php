@@ -140,6 +140,7 @@ class AnalyticsController extends BaseController
         foreach ($data as $m) {
             $time = Carbon::parse($m->created_at)->format('H:i:s');
             if ($time >= $start_time && $time <= $end_time) {
+                // $views += 1;
                 $views += $m->count;
             }
         }
