@@ -23,6 +23,13 @@ Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], funct
 
     // protected routes
     Route::group(['middleware' => 'auth'], function () {
+
+        ////////////////////
+        // UserController //
+        ////////////////////
+        Route::get('users', [App\Http\Controllers\API\UserController::class, 'getUsers'])->name('all_users');
+        Route::post('user', [App\Http\Controllers\API\UserController::class, 'addUser'])->name('add_user');
+        Route::delete('user/{id}', [App\Http\Controllers\API\UserController::class, 'deleteUser'])->name('delete_user');
         Route::get('test', function () {
             return response(123);
         });
