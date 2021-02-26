@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useSWR from 'swr';
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -29,8 +29,14 @@ import Spinner from '../components/Spinner';
 import file_icon from "../assets/img/file-empty.js";
 
 
+const useQuery = ()=>{
+    return new URLSearchParams(useLocation().search);
+}
+
 function TableList() {
     const [showModal, setModal] = useState(false);
+
+    const query = useQuery().get('q');
 
     // fetch from backend
     let { data, error, mutate } = useSWR("/api/media/all", fetcher);
@@ -46,18 +52,28 @@ function TableList() {
     }
     if (error) data = [];
 
-    // Pagination
-
+    ////////////////
+    // Pagination //
+    ////////////////
     const [activePage, setActivePage] = useState(0);
     //
     const media_per_page = 20;
-    const total_data_length = data ? data.length : 0;
-
+    let total_data_length = 0;
+    // 
     // paginate data
     if (data && data.length) {
         const begin = activePage * media_per_page,
             end = begin + media_per_page;
 
+        // apply filter if search query present
+        if (query) {
+            data = data.filter(v => v.name.match(new RegExp(query, "i")));
+        }
+
+        // get total length of data
+        total_data_length = data.length;
+
+        // slice data (page)
         data = data.slice(begin, end);
     }
 
@@ -89,7 +105,9 @@ function TableList() {
                     <Col md="12">
                         <Card className="shadow strpied-tabled-with-hover ">
                             <Card.Header>
-                                <Card.Title as="h4">Media files </Card.Title>
+                                <Card.Title as="h4">
+                                    Media files <p className='card-category'> {query ? `Search results for '${query}'` : ""} </p>
+                                </Card.Title>
                             </Card.Header>
                             <Card.Body className="table-full-width table-responsive px-0">
                                 <Row className="mx-1">
@@ -97,7 +115,7 @@ function TableList() {
                                         isLoading
                                         ? <div className="m-auto"> <Spinner type='list' /> </div>
                                         : (
-                                            !data.length
+                                            !total_data_length
                                             ? <div className="m-auto"> Nothing here </div>
                                             : data.map((media) => (
                                                 <Col lg="3" sm="6" key={media.id}>
@@ -135,7 +153,7 @@ function TableList() {
                                 <div className="ml-3">
                                     <Pagination>
                                         {
-                                            data && data.length
+                                            total_data_length
                                             ? (
                                                 Array
                                                 .from({length: total_data_length / media_per_page}, (_, i)=>i)
