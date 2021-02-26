@@ -1,113 +1,143 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import useSWR from 'swr';
 
 import avatar from "../assets/img/avatar.png";
 
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  Navbar,
-  Nav,
-  Container,
-  Row,
-  Col,
-  Pagination,
+    Badge,
+    Button,
+    Card,
+    Form,
+    Navbar,
+    Nav,
+    Container,
+    Row,
+    Col,
+    Pagination,
 } from "react-bootstrap";
+import swal from "sweetalert";
 
-import NewUser from '../modals/NewUser.js';
-import UserModal from '../modals/UserModal.js';
+import NewUser from "../modals/NewUser.js";
+import {fetcher} from '../helpers/fetcher';
 
-import swal from 'sweetalert';
+import Spinner from '../components/Spinner';
 
 
 function User() {
+    const [activePage, setActivePage] = useState(0);
+    //
+    const [showNewUserModal, setNewUserModal] = useState(false);
+    const [showUserModal, setUserModal] = useState(false);
 
-  const [activePage, setActivePage] = useState(0);
-  // 
-  const [showNewUserModal, setNewUserModal] = useState(false);
-  const [showUserModal, setUserModal] = useState(false);
+    let { data, error, mutate } = useSWR("/api/users", fetcher);
+    let isLoading = !data & !error;
 
-  // user shown in the modal (an object)
-  const [modalUser, setModalUser] = useState(null);
+    if (data) {
+        if (!data.success) {
+            swal(data.message);
+            data = [];
+        }
+        else {
+            data = data.data;
+        }
+    }
+    if (error) data = [];
 
-  const deleteUser = ()=>{
-    swal("Are you sure you want to do this?", {
-      buttons: ["No", "Yes"],
-    });
-  }
 
-  return (
-    <>
-      <Container fluid>
+    const deleteUser = (id) => {
+        swal("Delete user ?", {
+            buttons: ["No", "Yes"],
+        })
+        .then(r => {
+            if (r) {
+                axios.delete(`/api/user/${id}`)
+                .then(r => {
+                    if (r.data.success) {
+                        swal("User deleted!", "Updating user list...", "success");
+                        mutate(); // update user list
+                    }
+                });
+            }
+        })
+    };
 
-        <div className="text-right">
-          <Button onClick={()=>setNewUserModal(true)} size="sm" variant="success" className="rounded mb-2"> <i className="fas fa-plus"></i>  Add new user </Button>
-        </div>
-
-        <NewUser show={showNewUserModal} onClose={()=>setNewUserModal(false)} />
-        <UserModal show={showUserModal} user={modalUser} onClose={()=>setUserModal(false)} />
-
-        <Row>
-          <Col md="12">
-            <Card className="shadow">
-              <Card.Header>
-                <Card.Title as="h4">Users</Card.Title>
-              </Card.Header>
-              <Card.Body>
- 
-               <Row>
-             {Array.from({length: 9}, (_,i)=>i).map((id)=>(
-                 <div className="col-xl-4 col-md-6 mb-3 col-margin" key={id}>
-                  <div className="card border-left-primary shadow h-90 py-0">
-                    <div className="card-body pb-0">
-                        <div className="card-image-top m-auto">
-                            <img src={avatar} className="rounded-circle border m-auto d-block" width="140" height="140"/>
-                        </div>
-                    </div>
-                    <div className="card-footer bg-white pb-0">
-                      <div className="lead-details">
-                          <div>
-                              <p id="user-name" className="mb-0"> John Doe </p>
-                              <p id="user-email" className='text-small text-secondary'> <em>john@doe.email</em> </p>
-                          </div>
-                      </div>
-                      <div className="settings float-right">
-                          <button className="btn btn-sm border-secondary" onClick={()=>{
-                            setModalUser({name: "John Doe"})
-                            setUserModal(true);
-                          }}>
-                              <i className='fa fa-eye'></i>
-                          </button>
-                          <button onClick={deleteUser} className="btn btn-sm border-danger ml-3">
-                              <i className='fa fa-trash text-danger'></i>
-                          </button>
-                      </div>
-                    </div>
-
-                  </div>
+    return (
+        <>
+            <Container fluid>
+                <div className="text-right">
+                    <Button
+                        size="sm"
+                        variant="success"
+                        className="rounded mb-2"
+                        onClick={() => setNewUserModal(true)}
+                    >
+                        <i className="fas fa-plus"></i> Add new user
+                    </Button>
                 </div>
-             ))}
-             </Row>
 
-               <div className="ml-3">
-                 <Pagination>
-                   {Array.from({length: 4}, (_,i)=>i).map((id, i)=>(
-                     <Pagination.Item key={id} active={i === activePage} onClick={()=>setActivePage(id)}>
-                      {id+1}
-                    </Pagination.Item>
-                   ))}
-                 </Pagination>
-               </div>
+                <NewUser
+                    show={showNewUserModal}
+                    onClose={() => setNewUserModal(false)}
+                    onMutate={() => {
+                        swal("User created!", "Updating user list...", "success");
+                        mutate(); // update user list
+                    }}
+                />
 
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+                <Row>
+                    <Col md="12">
+                        <Card className="shadow">
+                            <Card.Header>
+                                <Card.Title as="h4">Users</Card.Title>
+                            </Card.Header>
+                            <Card.Body>
+                                <Row>
+                                    {
+                                        isLoading
+                                        ? <div className="m-auto"> <Spinner type='list' /> </div>
+                                        : (
+                                            !data.length 
+                                            ? <div className="m-auto"> Nothing here </div>
+                                            : data.map((user) =>(
+                                                <div className="col-xl-4 col-md-6 mb-3 col-margin" key={user.id}>
+                                                    <div className="card border-left-primary shadow h-90 py-0">
+                                                        <div className="card-body pb-0">
+                                                            <div className="card-image-top m-auto">
+                                                                <img src={avatar} className="rounded-circle border m-auto d-block" width="140" height="140" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="card-footer bg-white pb-0">
+                                                            <div className="lead-details">
+                                                                <div>
+                                                                    <p id="user-name" className="mb-0"> {user.name} </p>
+                                                                    <p id="user-email" className="text-small text-secondary"> 
+                                                                        <em> {user.email} </em>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="settings float-right">
+                                                                <button
+                                                                    onClick={ ()=>deleteUser(user.id) } className="btn btn-sm border-danger ml-3">
+                                                                    <i className="fa fa-trash text-danger"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        )
+                                    )}
+                                </Row>
+
+                                <div className="ml-3"></div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
 }
 
 export default User;

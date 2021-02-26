@@ -1,9 +1,11 @@
 import React, {useState, useRef} from "react";
 import {Modal, Button} from 'react-bootstrap';
 
+import swal from "sweetalert";
+
 import Spinner from '../components/Spinner.js';
 
-function UploadMedia({show, onClose}) {
+function UploadMedia({show, onClose, onMutate}) {
     const [loading, setLoading] = useState(false);
 
     const [name, setName] = useState("");
@@ -12,6 +14,13 @@ function UploadMedia({show, onClose}) {
     const handleUpload = ()=>{
         setLoading(true);
 
+        addUser([name, email], (success) => {
+            setLoading(false);
+            if (success) {
+                onMutate();
+                setName(""), setEmail("");
+            }
+        });
     }
 
     return (
@@ -48,8 +57,26 @@ function UploadMedia({show, onClose}) {
 }
 
 
-async function addUser() {
-    // body...
+
+/**
+ * Adds a user.
+ *
+ * @param     name      User name
+ * @param     email     User email
+ * @param     callback  callback
+ */
+async function addUser([name, email], callback) {
+    axios.post('/api/user', {
+        name,
+        email
+    })
+    .then(r => {
+        const {success} = r.data;
+        callback(success);
+        if (!success) {
+            swal("Failed to create User", `${r.data.message}\n\n${r.data.data.join('\n')}`, "error");
+        }
+    })
 }
 
 export default UploadMedia;
