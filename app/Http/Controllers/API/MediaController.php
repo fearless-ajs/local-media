@@ -221,7 +221,7 @@ class MediaController extends BaseController
         $user = $request->user();
         $validator = Validator::make($request->all(), [
             'name' => 'required | string',
-            'media_file' => 'required | mimes:jfif,pjp,mp4,webm,3gp,pdf',
+            'media_file' => 'required | mimes:mp4,webm,3gp,pdf',
         ]);
         if ($validator->fails()) {
             $err_msg = $request->name
