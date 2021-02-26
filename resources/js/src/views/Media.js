@@ -1,108 +1,149 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useSWR from 'swr';
 
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-  Modal,
-  Pagination,
+    Badge,
+    Button,
+    Card,
+    Navbar,
+    Nav,
+    Table,
+    Container,
+    Row,
+    Col,
+    Modal,
+    Pagination,
 } from "react-bootstrap";
+import swal from "sweetalert";
 
-import UploadModal from '../modals/UploadMedia';
+import UploadModal from "../modals/UploadMedia";
 import "../assets/scss/views/Media.scss";
 
-// 
-import img4 from "../assets/img/sidebar-4.jpg";
-import img5 from "../assets/img/sidebar-5.jpg";
-import img3 from "../assets/img/sidebar-3.jpg";
-import img1 from "../assets/img/sidebar-1.jpg";
-import img2 from "../assets/img/sidebar-2.jpg";
+import {fetcher} from '../helpers/fetcher';
+import Spinner from '../components/Spinner';
+import file_icon from "../assets/img/file-empty.js";
 
-import file_icon from '../assets/img/file-empty.js';
 
 function TableList() {
-  const [showModal, setModal] = useState(false);
+    const [showModal, setModal] = useState(false);
 
-  const [activePage, setActivePage] = useState(0);
-  const data = Array.from({length: 16}, (_,i)=>i);
+    // fetch from backend
+    let { data, error, mutate } = useSWR("/api/media/all", fetcher);
+    let isLoading = !data & !error;
 
-  return (
-    <>
-      <Container fluid>
-        <div className="text-right">
-          <Button onClick={()=>setModal(true)} size="sm" variant="success" className="rounded mb-2"> <i className="fas fa-plus"></i>  Upload </Button>
-        </div>
+    if (data) {
+        if (!data.success) {
+            swal(data.message);
+            data = [];
+        } else {
+            data = data.data;
+        }
+    }
+    if (error) data = [];
 
-        <UploadModal show={showModal} onClose={()=>setModal(false)} />
+    const [activePage, setActivePage] = useState(0);
 
-        <Row>
-          <Col md="12">
-            <Card className="shadow strpied-tabled-with-hover ">
-              <Card.Header>
-                <Card.Title as="h4">Media files </Card.Title>
-              </Card.Header>
-              <Card.Body className="table-full-width table-responsive px-0">
 
-               <Row className="mx-1">
-                  {data.map(id=>(
-                  <Col lg="3" sm="6" key={id}>
+    return (
+        <>
+            <Container fluid>
+                <div className="text-right">
+                    <Button
+                        onClick={() => setModal(true)}
+                        size="sm"
+                        variant="success"
+                        className="rounded mb-2"
+                    >
+                        <i className="fas fa-plus"></i> Upload
+                    </Button>
+                </div>
 
-                    <Link to={`/admin/media/${id}`}>
-                      <Card className="shadow card-stats position-relative">
-                        <Card.Body className="p-1 m-0 position-relative">
-                          <div className="media-view-count">  <i className="fa fa-eye"></i> {_.random(1,78)} </div>
-                          <LazyLoadImage
-                            className="img-fluid"
-                            src={_.sample([img1,img2,img3,img4,img5, ""])}
-                            onError={(ev)=>{
-                              ev.target.src = file_icon;
-                            }}
-                          />
-                        </Card.Body>
+                <UploadModal
+                    show={showModal}
+                    onClose={() => setModal(false)}
+                    onMutate={() => {
+                        swal("Upload successful!", "Updating media list...", "success");
+                        mutate(); // update media list
+                    }}
+                />
 
-                        <Card.Footer className="p-1">
-                          <hr className="m-0"></hr>
-                          <div className="media-info">
-                            <span className="media-name">
-                              FIle name
-                            </span>
-                          </div>
-                        </Card.Footer>
-                      </Card>
-                    </Link>
-                  </Col>
-                  ))}
-               </Row>
+                <Row>
+                    <Col md="12">
+                        <Card className="shadow strpied-tabled-with-hover ">
+                            <Card.Header>
+                                <Card.Title as="h4">Media files </Card.Title>
+                            </Card.Header>
+                            <Card.Body className="table-full-width table-responsive px-0">
+                                <Row className="mx-1">
+                                    {
+                                        isLoading
+                                        ? <div className="m-auto"> <Spinner type='list' /> </div>
+                                        : (
+                                            !data.length
+                                            ? <div className="m-auto"> Nothing here </div>
+                                            : data.map((media) => (
+                                                <Col lg="3" sm="6" key={media.id}>
+                                                    <Link to={`/admin/media/${media.id}`}>
+                                                        <Card className="shadow card-stats position-relative">
+                                                            <Card.Body className="p-1 m-0 position-relative">
+                                                                <div className="media-view-count">
+                                                                    <i className="fa fa-eye"></i>
+                                                                    {media.views}
+                                                                </div>
+                                                                {/* TODO: check if pdf or video, replace with special component */}
+                                                                <LazyLoadImage
+                                                                    className="img-fluid"
+                                                                    src={`storage/${media.path}`}
+                                                                    onError={(ev) => { ev.target.src = file_icon; }}
+                                                                />
+                                                            </Card.Body>
 
-               <div className="ml-3">
-                 <Pagination>
-                   {Array.from({length: data.length/4}, (_,i)=>i).map((id, i)=>(
-                     <Pagination.Item key={id} active={i === activePage} onClick={()=>setActivePage(id)}>
-                      {id+1}
-                    </Pagination.Item>
-                   ))}
-                 </Pagination>
-               </div>
+                                                            <Card.Footer className="p-1">
+                                                                <hr className="m-0"></hr>
+                                                                <div className="media-info">
+                                                                    <span className="media-name">
+                                                                        {media.name}
+                                                                    </span>
+                                                                </div>
+                                                            </Card.Footer>
+                                                        </Card>
+                                                    </Link>
+                                                </Col>
+                                            ))
+                                        )
+                                    }
+                                </Row>
 
-              </Card.Body>
-            </Card>
-          </Col>
- 
-        </Row>
-      </Container>
-    </>
-  );
+                                <div className="ml-3">
+                                    <Pagination>
+{/*                                        {Array.from(
+                                            { length: data.length / 4 },
+                                            (_, i) => i
+                                        ).map((id, i) => (
+                                            <Pagination.Item
+                                                key={id}
+                                                active={i === activePage}
+                                                onClick={() =>
+                                                    setActivePage(id)
+                                                }
+                                            >
+                                                {id + 1}
+                                            </Pagination.Item>
+                                        ))}
+*/}                                    </Pagination>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
 }
 
 export default TableList;
