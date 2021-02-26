@@ -23,7 +23,7 @@ class MediaController extends BaseController
      */
     public function getAllMedia(Request $request)
     {
-        return $this->sendResponse(Media::all());
+        return $this->sendResponse(Media::orderByDesc('id')->get());
     }
 
 

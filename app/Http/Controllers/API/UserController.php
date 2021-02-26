@@ -17,7 +17,7 @@ class UserController extends BaseController
      */
     public function getUsers(Request $request)
     {
-        return $this->sendResponse(User::all());
+        return $this->sendResponse(User::orderByDesc('id')->get());
     }
 
 
