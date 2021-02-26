@@ -64,12 +64,22 @@ class AnalyticsController extends BaseController
         ->orderByDesc('total_views')
         ->get();
 
+
         $result = [];
         foreach ($data as $f) {
             if (!array_key_exists($f->name, $result))
                 $result[$f->name] = 0;
 
             $result[$f->name] += $f->total_views;
+        }
+
+        // sort in descending order
+        arsort($result);
+
+        // limit to top10 if no we are not fetching
+        // for a specific media
+        if ($media_id == -1) {
+            $result = array_slice($result, 0, 10);
         }
 
         return $this->sendResponse($result);
