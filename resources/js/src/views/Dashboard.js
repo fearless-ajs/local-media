@@ -1,5 +1,9 @@
 import React from "react";
+
 import ChartistGraph from "react-chartist";
+import useSWR from 'swr';
+import { toHumanString } from "human-readable-numbers";
+
 // react-bootstrap components
 import {
     Badge,
@@ -16,322 +20,261 @@ import {
     Tooltip,
 } from "react-bootstrap";
 
-import { toHumanString } from "human-readable-numbers";
+import Spinner from '../components/Spinner';
+import {fetcher} from '../helpers/fetcher';
+
+import "../assets/scss/views/Dashboard.scss";
+
+
+
+// likes, shares, comments, views
+//
+function TotalStats(argument) {
+    let {data, error, mutate} = useSWR('/api/analytics/stats', fetcher);
+    let isLoading = !data & !error;
+
+    if (data) {
+        data = data.data;
+    }
+    if (error) {
+        data = {views: "0", shares: "0", comments: "0", likes: "0"};
+    }
+
+    const metrics = [
+        ['Views', 'fas fa-eye text-warning'],
+        ['Shares', 'fas fa-share text-success'],
+        ['Comments', 'fas fa-comments text-info'],
+        ['Likes', 'fas fa-heart text-danger'],
+    ];
+    return (
+        <Row>
+            {metrics.map(v => (
+                <Col lg="3" sm="6" key={v[0]}>
+                    <Card className="shadow card-stats">
+                        <Card.Body>
+                            <Row>
+                                <Col xs="5">
+                                    <div className="icon-big text-center icon-warning">
+                                        <i className={v[1]}></i>
+                                    </div>
+                                </Col>
+                                <Col xs="7">
+                                    <div className="numbers">
+                                        <p className="card-category">Total {v[0]}</p>
+                                        <Card.Title as="h4">
+                                            {isLoading ? <Spinner type='list'/> : toHumanString(data[v[0].toLowerCase()])}
+                                        </Card.Title>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        <Card.Footer>
+                            <hr></hr>
+                            <div className="stats" onClick={()=>mutate()}>
+                                <i className="fas fa-redo mr-1"></i>
+                                Update Now
+                            </div>
+                        </Card.Footer>
+                    </Card>
+                </Col>
+            ))}
+        </Row>
+    );
+}
+
+
+// open, bunce, engage pie chart
+//
+function UserBehaviour() {
+    let {data, error, mutate} = useSWR('/api/analytics/behaviours', fetcher);
+    let isLoading = !data & !error;
+
+    if (data) {
+        data = data.data;
+
+        const sum = (+data.user_open) + (+data.user_bounce) + (+data.user_engage);
+        if (sum) {
+            data.user_open = (+data.user_open / sum) * 100;
+            data.user_bounce = (+data.user_bounce / sum) * 100;
+            data.user_engage = (+data.user_engage / sum) * 100;
+        }
+    }
+    if (error) {
+        data = {user_bounce: 0, user_engage: 0, user_open: 0};
+    }
+
+    return (
+        <Col md="4">
+            <Card className="shadow cursor-pointer" onClick={()=>mutate()}>
+                <Card.Header>
+                    <Card.Title as="h4">Users Behaviour</Card.Title>
+                    <p className="card-category mb-0">
+                        Last Media Performance
+                    </p>
+                </Card.Header>
+                <Card.Body>
+                    <div
+                        className="ct-chart ct-perfect-fourth"
+                        id="chartPreferences"
+                    >
+                        {isLoading
+                            ? <Spinner type='list' />
+                            : (
+                                <ChartistGraph
+                                    data={{
+                                        labels: [`${data.user_open}%`, `${data.user_bounce}%`, `${data.user_engage}%`],
+                                        series: [data.user_open, data.user_bounce, data.user_engage],
+                                    }}
+                                    type="Pie"
+                                />
+                            )
+                        }
+                    </div>
+                    <div className="legend">
+                        <span title="Users that open the media">
+                            <i className="fas fa-circle text-info"></i> Open
+                        </span>
+                        <i className="fas fa-circle text-danger"></i> Bounce
+                        <i className="fas fa-circle text-warning"></i> Engage
+                    </div>
+                </Card.Body>
+            </Card>
+        </Col>
+
+    );
+}
+
+
+
+// last media performance
+//
+function Performance(argument) {
+    let {data, error, mutate} = useSWR('/api/analytics/performance', fetcher);
+    let isLoading = !data & !error;
+
+    if (data) {
+        data = data.data;
+    }
+    if (error) {
+        data = {"12AM-3AM": 0,"3AM-6AM": 0,"6AM-9AM": 0,"9AM-12PM": 0,"12PM-3PM": 0,"3PM-6PM": 0,"6PM-9PM": 0,"9PM-12AM": 0}
+    }
+
+    return (
+        <Col md="8">
+            <Card className="shadow cursor-pointer" onClick={()=>mutate()}>
+                <Card.Header>
+                    <Card.Title as="h4"> Performance </Card.Title>
+                    <p className="card-category"> (Last Media) </p>
+                </Card.Header>
+                <Card.Body>
+                    <div className="ct-chart" id="chartHours">
+                        {isLoading
+                            ? <Spinner type='list' />
+                            : (
+                                <ChartistGraph
+                                    data={{
+                                        labels: Object.keys(data),
+                                        series: [Object.values(data)],
+                                    }}
+                                    type="Line"
+                                    options={{
+                                        low: 0,
+                                        high: Math.max(Object.values(data)) * 2,
+                                        height: "245px",
+                                        chartPadding: {
+                                            right: 50,
+                                        },
+                                    }}
+                                    responsiveOptions={[
+                                        [
+                                            "screen and (max-width: 640px)",
+                                            {
+                                                axisX: { labelInterpolationFnc: value => value[0], },
+                                            },
+                                        ],
+                                    ]}
+                                />
+                            )
+                        }
+                    </div>
+                </Card.Body>
+            </Card>
+        </Col>
+    );
+}
+
+
+// top 10 Distribuitors
+//
+function TopDistributors(argument) {
+    let {data, error, mutate} = useSWR('/api/analytics/distributors', fetcher);
+    let isLoading = !data & !error;
+
+    if (data) {
+        data = data.data;
+    }
+    if (error) data = {}
+
+    return (
+        <Col md="8">
+            <Card className="shadow cursor-pointer" onClick={()=>mutate()}>
+                <Card.Header>
+                    <Card.Title as="h4">
+                        Top 10 Distribuitors
+                    </Card.Title>
+                </Card.Header>
+                <Card.Body>
+                    <div className="ct-chart" id="chartActivity">
+                        {isLoading
+                            ? <Spinner type='list' />
+                            : (
+                                <ChartistGraph
+                                    data={{
+                                        labels: Object.keys(data),
+                                        series: [Object.values(data)],
+                                    }}
+                                    type="Bar"
+                                    options={{
+                                        stackBars: true,
+                                        seriesBarDistance: 30,
+                                        axisX: {showGrid: false, },
+                                        height: "245px",
+                                    }}
+                                    responsiveOptions={[
+                                        [
+                                            "screen and (max-width: 640px)",
+                                            {
+                                                seriesBarDistance: 5,
+                                                axisX: { labelInterpolationFnc: value => value[0] },
+                                            },
+                                        ],
+                                    ]}
+                                />
+                            )
+                        }
+                    </div>
+                </Card.Body>
+            </Card>
+        </Col>
+
+    );
+}
+
 
 function Dashboard() {
+
     return (
         <>
             <Container fluid>
+                <TotalStats />
+
                 <Row>
-                    <Col lg="3" sm="6">
-                        <Card className="shadow card-stats">
-                            <Card.Body>
-                                <Row>
-                                    <Col xs="5">
-                                        <div className="icon-big text-center icon-warning">
-                                            <i className="fas fa-eye text-warning"></i>
-                                        </div>
-                                    </Col>
-                                    <Col xs="7">
-                                        <div className="numbers">
-                                            <p className="card-category">
-                                                Total views
-                                            </p>
-                                            <Card.Title as="h4">
-                                                {toHumanString(159181945)}
-                                            </Card.Title>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                                <hr></hr>
-                                <div className="stats">
-                                    <i className="fas fa-redo mr-1"></i>
-                                    Update Now
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                    </Col>
-
-                    <Col lg="3" sm="6">
-                        <Card className="shadow card-stats">
-                            <Card.Body>
-                                <Row>
-                                    <Col xs="5">
-                                        <div className="icon-big text-center icon-warning">
-                                            <i className="fas fa-share text-success"></i>
-                                        </div>
-                                    </Col>
-                                    <Col xs="7">
-                                        <div className="numbers">
-                                            <p className="card-category">
-                                                Total Shares
-                                            </p>
-                                            <Card.Title as="h4">
-                                                {toHumanString(34919)}
-                                            </Card.Title>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                                <hr></hr>
-                                <div className="stats">
-                                    <i className="fas fa-redo mr-1"></i>
-                                    Update Now
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                    </Col>
-
-                    <Col lg="3" sm="6">
-                        <Card className="shadow card-stats">
-                            <Card.Body>
-                                <Row>
-                                    <Col xs="5">
-                                        <div className="icon-big text-center icon-warning">
-                                            <i className="fas fa-comments text-info"></i>
-                                        </div>
-                                    </Col>
-                                    <Col xs="7">
-                                        <div className="numbers">
-                                            <p className="card-category">
-                                                Total Comments
-                                            </p>
-                                            <Card.Title as="h4">
-                                                {toHumanString(159)}
-                                            </Card.Title>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                                <hr></hr>
-                                <div className="stats">
-                                    <i className="fas fa-redo mr-1"></i>
-                                    Update Now
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                    </Col>
-
-                    <Col lg="3" sm="6">
-                        <Card className="shadow card-stats">
-                            <Card.Body>
-                                <Row>
-                                    <Col xs="5">
-                                        <div className="icon-big text-center icon-warning">
-                                            <i className="fa fa-heart text-danger"></i>
-                                        </div>
-                                    </Col>
-                                    <Col xs="7">
-                                        <div className="numbers">
-                                            <p className="card-category">
-                                                Total Likes
-                                            </p>
-                                            <Card.Title as="h4">
-                                                {toHumanString(15918)}
-                                            </Card.Title>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                                <hr></hr>
-                                <div className="stats">
-                                    <i className="fas fa-redo mr-1"></i>
-                                    Update now
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                    </Col>
+                    <Performance />
+                    <UserBehaviour />
                 </Row>
 
                 <Row>
-                    <Col md="8">
-                        <Card className="shadow">
-                            <Card.Header>
-                                <Card.Title as="h4">
-                                    Performance This Year
-                                </Card.Title>
-                                <p className="card-category">
-                                    {" "}
-                                    {new Date().getFullYear()}{" "}
-                                </p>
-                            </Card.Header>
-                            <Card.Body>
-                                <div className="ct-chart" id="chartHours">
-                                    <ChartistGraph
-                                        data={{
-                                            labels: [
-                                                "9:00AM",
-                                                "12:00AM",
-                                                "3:00PM",
-                                                "6:00PM",
-                                                "9:00PM",
-                                                "12:00PM",
-                                                "3:00AM",
-                                                "6:00AM",
-                                            ],
-                                            series: [
-                                                [
-                                                    287,
-                                                    385,
-                                                    490,
-                                                    492,
-                                                    554,
-                                                    586,
-                                                    698,
-                                                    695,
-                                                ],
-                                            ],
-                                        }}
-                                        type="Line"
-                                        options={{
-                                            low: 0,
-                                            high: 800,
-                                            showArea: false,
-                                            height: "245px",
-                                            axisX: {
-                                                showGrid: false,
-                                            },
-                                            lineSmooth: true,
-                                            showLine: true,
-                                            showPoint: true,
-                                            fullWidth: true,
-                                            chartPadding: {
-                                                right: 50,
-                                            },
-                                        }}
-                                        responsiveOptions={[
-                                            [
-                                                "screen and (max-width: 640px)",
-                                                {
-                                                    axisX: {
-                                                        labelInterpolationFnc: function (
-                                                            value
-                                                        ) {
-                                                            return value[0];
-                                                        },
-                                                    },
-                                                },
-                                            ],
-                                        ]}
-                                    />
-                                </div>
-                            </Card.Body>
-                            <Card.Footer>
-                                {/*                <div className="stats">
-                  <i className="fas fa-history"></i>
-                  Updated 3 minutes ago
-                </div>
-*/}{" "}
-                            </Card.Footer>
-                        </Card>
-                    </Col>
-                    <Col md="4">
-                        <Card className="shadow">
-                            <Card.Header>
-                                <Card.Title as="h4">Users Behavior</Card.Title>
-                                <p className="card-category mb-0">
-                                    Last Media Performance
-                                </p>
-                            </Card.Header>
-                            <Card.Body>
-                                <div
-                                    className="ct-chart ct-perfect-fourth"
-                                    id="chartPreferences"
-                                >
-                                    <ChartistGraph
-                                        data={{
-                                            labels: ["40%", "20%", "40%"],
-                                            series: [40, 20, 40],
-                                        }}
-                                        type="Pie"
-                                    />
-                                </div>
-                                <div className="legend">
-                                    <span title="Users that open the media">
-                                        {" "}
-                                        <i className="fas fa-circle text-info"></i>{" "}
-                                        Open{" "}
-                                    </span>
-                                    <i className="fas fa-circle text-danger"></i>{" "}
-                                    Bounce
-                                    <i className="fas fa-circle text-warning"></i>{" "}
-                                    Engage
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md="6">
-                        <Card className="shadow">
-                            <Card.Header>
-                                <Card.Title as="h4">
-                                    Top 10 Distribuitors{" "}
-                                </Card.Title>
-                                {/*                <p className="card-category">All products including Taxes</p>
-                                 */}{" "}
-                            </Card.Header>
-                            <Card.Body>
-                                <div className="ct-chart" id="chartActivity">
-                                    <ChartistGraph
-                                        data={{
-                                            labels: [
-                                                "John1",
-                                                "John1",
-                                                "John1",
-                                                "John1",
-                                                "John1",
-                                                "John1",
-                                                "345 ABC DEF",
-                                                "John1",
-                                            ],
-                                            series: [
-                                                [
-                                                    542,
-                                                    443,
-                                                    320,
-                                                    780,
-                                                    553,
-                                                    453,
-                                                    326,
-                                                    434,
-                                                ],
-                                            ],
-                                        }}
-                                        type="Bar"
-                                        options={{
-                                            stackBars: true,
-                                            seriesBarDistance: 30,
-                                            axisX: {
-                                                showGrid: false,
-                                            },
-                                            height: "245px",
-                                        }}
-                                        responsiveOptions={[
-                                            [
-                                                "screen and (max-width: 640px)",
-                                                {
-                                                    seriesBarDistance: 5,
-                                                    axisX: {
-                                                        labelInterpolationFnc: function (
-                                                            value
-                                                        ) {
-                                                            return value[0];
-                                                        },
-                                                    },
-                                                },
-                                            ],
-                                        ]}
-                                    />
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    <TopDistributors />
                 </Row>
             </Container>
         </>
