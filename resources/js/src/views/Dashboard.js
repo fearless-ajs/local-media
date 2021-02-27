@@ -36,7 +36,7 @@ function TotalStats(argument) {
     if (data) {
         data = data.data;
     }
-    if (error) {
+    if (error || !data) {
         data = {views: "0", shares: "0", comments: "0", likes: "0"};
     }
 
@@ -92,9 +92,7 @@ function UserBehaviour() {
     let {data, error, mutate} = useSWR('/api/analytics/behaviours', fetcher);
     let isLoading = !data & !error;
 
-    if (data) {
-        data = data.data;
-
+    if (data && data.data) {
         const sum = (+data.user_open) + (+data.user_bounce) + (+data.user_engage);
         if (sum) {
             data.user_open = (+data.user_open / sum) * 100;
@@ -102,7 +100,7 @@ function UserBehaviour() {
             data.user_engage = (+data.user_engage / sum) * 100;
         }
     }
-    if (error) {
+    if (error || !data) {
         data = {user_bounce: 0, user_engage: 0, user_open: 0};
     }
 
@@ -158,7 +156,7 @@ function Performance(argument) {
     if (data) {
         data = data.data;
     }
-    if (error) {
+    if (error || !data) {
         data = {"12AM-3AM": 0,"3AM-6AM": 0,"6AM-9AM": 0,"9AM-12PM": 0,"12PM-3PM": 0,"3PM-6PM": 0,"6PM-9PM": 0,"9PM-12AM": 0}
     }
 
@@ -216,7 +214,7 @@ function TopDistributors(argument) {
     if (data) {
         data = data.data;
     }
-    if (error) data = {}
+    if (error || !data) data = {}
 
     return (
         <Col md="8">

@@ -9169,7 +9169,7 @@ function TotalStats(argument) {
     data = data.data;
   }
 
-  if (error) {
+  if (error || !data) {
     data = {
       views: "0",
       shares: "0",
@@ -9239,8 +9239,7 @@ function UserBehaviour() {
 
   var isLoading = !data & !error;
 
-  if (data) {
-    data = data.data;
+  if (data && data.data) {
     var sum = +data.user_open + +data.user_bounce + +data.user_engage;
 
     if (sum) {
@@ -9250,7 +9249,7 @@ function UserBehaviour() {
     }
   }
 
-  if (error) {
+  if (error || !data) {
     data = {
       user_bounce: 0,
       user_engage: 0,
@@ -9318,7 +9317,7 @@ function Performance(argument) {
     data = data.data;
   }
 
-  if (error) {
+  if (error || !data) {
     data = {
       "12AM-3AM": 0,
       "3AM-6AM": 0,
@@ -9394,7 +9393,7 @@ function TopDistributors(argument) {
     data = data.data;
   }
 
-  if (error) data = {};
+  if (error || !data) data = {};
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__.default, {
     md: "8",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__.default, {
@@ -9552,7 +9551,7 @@ function TableList() {
     }
   }
 
-  if (error) data = []; ////////////////
+  if (error || !data) data = []; ////////////////
   // Pagination //
   ////////////////
 

@@ -53,7 +53,7 @@ function TableList() {
             data = data.data;
         }
     }
-    if (error) data = [];
+    if (error || !data) data = [];
 
     ////////////////
     // Pagination //
