@@ -26,6 +26,9 @@ import "../assets/scss/views/Media.scss";
 
 import {fetcher} from '../helpers/fetcher';
 import Spinner from '../components/Spinner';
+
+import multimedia_icon from "../assets/img/multimedia.svg";
+import pdf_icon from "../assets/img/pdf.svg";
 import file_icon from "../assets/img/file-empty.js";
 
 
@@ -129,7 +132,7 @@ function TableList() {
                                                                 {/* TODO: check if pdf or video, replace with image icon / pdf icon */}
                                                                 <LazyLoadImage
                                                                     className="img-fluid"
-                                                                    src={`storage/${media.path}`}
+                                                                    src={ media.type=='pdf' ? pdf_icon : multimedia_icon }
                                                                     onError={(ev) => { ev.target.src = file_icon; }}
                                                                 />
                                                             </Card.Body>

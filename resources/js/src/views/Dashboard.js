@@ -62,7 +62,10 @@ function TotalStats(argument) {
                                     <div className="numbers">
                                         <p className="card-category">Total {v[0]}</p>
                                         <Card.Title as="h4">
-                                            {isLoading ? <Spinner type='list'/> : toHumanString(data[v[0].toLowerCase()])}
+                                            {isLoading
+                                                ? <Spinner type='list'/>
+                                                : (data && toHumanString(data[v[0].toLowerCase()]))
+                                            }
                                         </Card.Title>
                                     </div>
                                 </Col>
