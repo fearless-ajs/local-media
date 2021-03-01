@@ -33,7 +33,7 @@ function TotalStats({id}) {
     let {data, error} = useSWR(`/api/media/${id}`, fetcher);
     let isLoading = !data & !error;
 
-    if (data && data.data) {
+    if (data) {
         data = data.data;
     }
     if (error || !data) {
@@ -84,7 +84,7 @@ function Distributors({id}) {
     let {data, error} = useSWR(`/api/media/${id}/distributors`, fetcher);
     let isLoading = !data & !error;
 
-    if (data && data.data) {
+    if (data) {
         data = data.data;
     }
     if (error || !data) data = {}
