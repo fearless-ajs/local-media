@@ -36,6 +36,9 @@ class MediaController extends BaseController
     public function getMedia(Request $request, $id)
     {
         $media = Media::firstWhere('id', $id);
+        if ($id == '-1') {
+            $media = Media::orderByDesc('id')->first();
+        }
         if (!$media) {
             return $this->sendError('Media Not Found', [], 404);
         }
