@@ -1,208 +1,217 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import ChartistGraph from "react-chartist";
+import { toHumanString as _toHumanString } from "human-readable-numbers";
+import swal from "sweetalert";
 
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Container,
-  Row,
-  Col,
+    Badge,
+    Button,
+    Card,
+    Navbar,
+    Nav,
+    Container,
+    Row,
+    Col,
 } from "react-bootstrap";
 
-import swal from 'sweetalert';
-import { toHumanString } from "human-readable-numbers";
+import useSWR, {mutate} from 'swr';
 
-function Icons() {
+import Spinner from '../components/Spinner';
+import {fetcher} from '../helpers/fetcher';
 
-  const onExport = ()=>{
-    swal("Export data in what format", {
-      buttons: ["Image", "CSV"],
-    });
-  }
+// 
+import MediaDropdown from '../components/MediaDropdown/MediaDropdown.js';
 
-  return (
-    <>
-      <Container fluid>
+// handle null values
+window.toHumanString = (v)=> !v ? "0" :_toHumanString(v)
+
+
+// views, likes, shares, comments
+// 
+function TotalStats({id}) {
+    let {data, error} = useSWR(`/api/media/${id}`, fetcher);
+    let isLoading = !data & !error;
+
+    if (data && data.data) {
+        data = data.data;
+    }
+    if (error || !data) {
+        data = {views: "0", shares: "0", comments: "0", likes: "0"};
+    }
+
+    const metrics = [
+        ['Views', 'fas fa-eye text-warning'],
+        ['Shares', 'fas fa-share text-success'],
+        ['Comments', 'fas fa-comments text-info'],
+        ['Likes', 'fas fa-heart text-danger'],
+    ];
+    return (
         <Row>
-          <Col md="12">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4"> Analytics </Card.Title>
-              </Card.Header>
-
-              <Card.Body>
-                <Row>
-                  <Col>
-                    <div className="media-select">
-                      <p className="text-secondary mb-0">
-                        Select Media to load Analytics{" "}
-                      </p>
-                      <select name="" id="" className="form-control w-50">
-                        <option value="element"> Video 1 </option>
-                        <option value="element"> Video 3 </option>
-                        <option value="element"> Video 5 </option>
-                        <option value="element"> Video 7 </option>
-                        <option value="element"> Video 9 </option>
-                      </select>
-                    </div>
-                    <hr />
-
-                    <div className="stats">
-                      <div className="mb-3">
-                        <Row>
-                          <Col lg="3" sm="6">
-                            <Card className="shadow card-stats">
-                              <Card.Body>
-                                <Row>
-                                  <Col xs="5">
+            {metrics.map(v => (
+                <Col lg="3" sm="6" key={v[0]}>
+                    <Card className="shadow card-stats">
+                        <Card.Body>
+                            <Row>
+                                <Col xs="5">
                                     <div className="icon-big text-center icon-warning">
-                                      <i className="fas fa-eye text-warning"></i>
+                                        <i className={v[1]}></i>
                                     </div>
-                                  </Col>
-                                  <Col xs="7">
+                                </Col>
+                                <Col xs="7">
                                     <div className="numbers">
-                                      <p className="card-category">Views</p>
-                                      <Card.Title as="h4">
-                                        {toHumanString(159181945)}
-                                      </Card.Title>
+                                        <p className="card-category">{v[0]}</p>
+                                        <Card.Title as="h4">
+                                            {isLoading
+                                                ? <Spinner type='list'/>
+                                                : (data && toHumanString(data[v[0].toLowerCase()]))
+                                            }
+                                        </Card.Title>
                                     </div>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            </Card>
-                          </Col>
-
-                          <Col lg="3" sm="6">
-                            <Card className="shadow card-stats">
-                              <Card.Body>
-                                <Row>
-                                  <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
-                                      <i className="fas fa-share text-success"></i>
-                                    </div>
-                                  </Col>
-                                  <Col xs="7">
-                                    <div className="numbers">
-                                      <p className="card-category">Shares</p>
-                                      <Card.Title as="h4">
-                                        {toHumanString(34919)}
-                                      </Card.Title>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            </Card>
-                          </Col>
-
-                          <Col lg="3" sm="6">
-                            <Card className="shadow card-stats">
-                              <Card.Body>
-                                <Row>
-                                  <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
-                                      <i className="fas fa-comments text-info"></i>
-                                    </div>
-                                  </Col>
-                                  <Col xs="7">
-                                    <div className="numbers">
-                                      <p className="card-category">Comments</p>
-                                      <Card.Title as="h4">
-                                        {toHumanString(159)}
-                                      </Card.Title>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            </Card>
-                          </Col>
-
-                          <Col lg="3" sm="6">
-                            <Card className="shadow card-stats">
-                              <Card.Body>
-                                <Row>
-                                  <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
-                                      <i className="fa fa-heart text-danger"></i>
-                                    </div>
-                                  </Col>
-                                  <Col xs="7">
-                                    <div className="numbers">
-                                      <p className="card-category">Likes</p>
-                                      <Card.Title as="h4">
-                                        {toHumanString(15918)}
-                                      </Card.Title>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div className="">
-                        <p className="h4"> Distributors (Views count) </p>
-                        <div className="ct-chart" id="chartActivity">
-                          <ChartistGraph
-                            data={{
-                              labels: [
-                                "John1",
-                                "John1",
-                                "John1",
-                                "John1",
-                                "John1",
-                                "John1",
-                                "345 ABC DEF",
-                                "John1",
-                              ],
-                              series: [
-                                [542, 443, 320, 780, 553, 453, 326, 434],
-                              ],
-                            }}
-                            type="Bar"
-                            options={{
-                              stackBars: true,
-                              seriesBarDistance: 30,
-                              axisX: {
-                                showGrid: false,
-                              },
-                              height: "245px",
-                            }}
-                            responsiveOptions={[
-                              [
-                                "screen and (max-width: 640px)",
-                                {
-                                  seriesBarDistance: 5,
-                                  axisX: {
-                                    labelInterpolationFnc: function (value) {
-                                      return value[0];
-                                    },
-                                  },
-                                },
-                              ],
-                            ]}
-                          />
-                        </div>
-                      </div>
-                      <button className="btn btn-info">
-                        <i className="fas fa-redo mr-1"></i> Update stats
-                      </button>
-                      <button onClick={onExport} className="btn btn-primary float-right">
-                        <i className="fas fa-file-export mr-1"></i> Export
-                      </button>
-                    </div>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            ))}
         </Row>
-      </Container>
-    </>
-  );
+    );
 }
 
-export default Icons;
+
+// distributors
+function Distributors({id}) {
+    let {data, error} = useSWR(`/api/media/${id}/distributors`, fetcher);
+    let isLoading = !data & !error;
+
+    if (data && data.data) {
+        data = data.data;
+    }
+    if (error || !data) data = {}
+
+    return (
+        <>
+            <p className="h4"> Distributors (Views count) </p>
+            <div className="ct-chart" id="chartActivity">
+                <ChartistGraph
+                    data={{
+                        labels: Object.keys(data),
+                        series: [Object.values(data)],
+                    }}
+                    type="Bar"
+                    options={{
+                        stackBars: true,
+                        seriesBarDistance: 30,
+                        axisX: {
+                            showGrid: false,
+                        },
+                        height: "245px",
+                    }}
+                    responsiveOptions={[
+                        [
+                            "screen and (max-width: 640px)",
+                            {
+                                seriesBarDistance: 5,
+                                axisX: {
+                                    labelInterpolationFnc: function (
+                                        value
+                                    ) {
+                                        return value[0];
+                                    },
+                                },
+                            },
+                        ],
+                    ]}
+                />
+            </div>
+        </>
+    );
+}
+
+
+function Analytics() {
+    const [videoID, setVideoID] = useState(-1);
+    const [isUpdatingStat, setUpdatingStat] = useState(false);
+
+    // get latest media id, 
+    useEffect(() => {
+        axios.get('/api/media/all')
+        .then(r => {
+            const {data} = r.data;
+            if (data instanceof Array && data.length) {
+                setVideoID(data[0].id);
+            }
+        })
+    }, [1])
+
+    const onExport = () => {
+        swal("Export data in what format", {
+            buttons: ["Image", "CSV"],
+        });
+    };
+
+    const updateStats = (id)=>{
+        setUpdatingStat(true);
+
+        // update data asynchronously
+        Promise
+        .all([mutate(`/api/media/${id}/distributors`), mutate(`/api/media/${id}`)])
+        .then(() => {
+            setUpdatingStat(false);
+        })
+    }
+
+    return (
+        <>
+            <Container fluid>
+                <Row>
+                    <Col md="12">
+                        <Card>
+                            <Card.Header>
+                                <Card.Title as="h4"> Analytics </Card.Title>
+                            </Card.Header>
+
+                            <Card.Body>
+                                <Row>
+                                    <Col>
+                                        <div className="media-select">
+                                            <p className="text-secondary mb-0">
+                                                Select Media to load Analytics
+                                            </p>
+                                            <MediaDropdown
+                                                videoID={videoID}
+                                                onChange={(id) => {
+                                                    setVideoID(id)
+                                                }}
+                                            />
+                                        </div>
+                                        <hr />
+
+                                        <div className="stats">
+                                            <div className="mb-3">
+                                                <TotalStats id={videoID} />
+                                            </div>
+                                            <div className="">
+                                                <Distributors id={videoID} />
+                                            </div>
+                                            <button className="btn btn-info" onClick={() => updateStats(videoID)}>
+                                                <i className={`fas fa-redo ${isUpdatingStat && 'fa-spin'} mr-1`}></i>
+                                                Update stats
+                                            </button>
+                                            <button onClick={onExport} className="btn btn-primary float-right">
+                                                <i className='fas fa-file-export mr-1'></i>
+                                                Export
+                                            </button>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
+}
+
+export default Analytics;
