@@ -37,6 +37,7 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
+        "date-fns": "^2.18.0",
         "human-readable-numbers": "^0.9.5",
         "js-cookie": "^2.2.1",
         "react-lazy-load-image-component": "^1.5.1",
