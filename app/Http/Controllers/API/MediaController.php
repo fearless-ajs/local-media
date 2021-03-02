@@ -58,7 +58,7 @@ class MediaController extends BaseController
             return $this->sendError('Media Not Found', [], 404);
         }
 
-        return $this->sendResponse(Comment::where('media_id', $media->id)->get());
+        return $this->sendResponse(Comment::where('media_id', $media->id)->orderByDesc('id')->get());
     }
 
 
