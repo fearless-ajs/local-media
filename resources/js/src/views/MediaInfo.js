@@ -37,7 +37,7 @@ function MediaInfo() {
 
   if (media) {
     if (!media.success) {
-      swal(msg || "Failed to load media", {
+      swal(media.message || "Failed to load media", {
         closeOnClickOutside: false,
       });
     }
