@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('media_id');
             // 
             $table->string('name');
+            $table->string('email');
             $table->string('message');
 
 
