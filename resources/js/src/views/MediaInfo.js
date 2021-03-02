@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 
 import "../assets/scss/views/Media.scss";
+import Comments from '../components/Media/Comments';
 
 import Spinner from "../components/Spinner.js";
 
@@ -53,10 +54,9 @@ function TableList() {
                 </Col>
 
                 <Col xs="12" sm="5" className="info-col p-0">
-                  <p className="text-secondary"> Comments </p>
-                  <div className="">
-                    <div> <Skeleton width={180}  /> </div>
-                    <div> <Skeleton width={300} count={1}  /> </div>
+                  {/* <p className="text-secondary"> Comments </p> */}
+                  <div className="comments">
+                    <Comments id={media?.id} />
                   </div>
                 </Col>
               </Row>

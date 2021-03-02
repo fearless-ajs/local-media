@@ -29,6 +29,10 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
 
+const styleLink = document.createElement("link");
+styleLink.rel = "stylesheet";
+styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+document.head.appendChild(styleLink);
 
 ReactDOM.render(
   <BrowserRouter>
