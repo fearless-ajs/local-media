@@ -94,6 +94,7 @@ class MediaController extends BaseController
 
         $validator = Validator::make($request->all(), [
             'name' => 'required | string | max:255',
+            'email' => 'required | email',
             'comment' => 'required | string',
         ]);
         if ($validator->fails()) {
@@ -102,6 +103,7 @@ class MediaController extends BaseController
 
         Comment::create([
             'name' => $request->name,
+            'email' => $request->email,
             'message' => $request->comment,
             'media_id' => $media->id,
         ]);
