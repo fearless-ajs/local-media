@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 
 import "../assets/scss/views/Media.scss";
+import Media from '../components/Media/Media';
 import Comments from '../components/Media/Comments';
 
 import Spinner from "../components/Spinner.js";
@@ -44,7 +45,10 @@ function TableList() {
               <Row className="m-auto">
                 <Col xs="12" sm="6" className="vid-col p-0 mr-5">
                   <div className="shadow mb-3 media-item" style={{height: '200px'}}>
-                    <Skeleton height={200} />
+                    {isLoading
+                      ? <Skeleton height={200} />
+                      : <Media media={media} />
+                    }
                   </div>
 
                   <div className="action-btns">
