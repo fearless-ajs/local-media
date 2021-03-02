@@ -92,12 +92,15 @@ function UserBehaviour() {
     let {data, error, mutate} = useSWR('/api/analytics/behaviours', fetcher);
     let isLoading = !data & !error;
 
-    if (data && data.data) {
-        const sum = (+data.user_open) + (+data.user_bounce) + (+data.user_engage);
-        if (sum) {
-            data.user_open = (+data.user_open / sum) * 100;
-            data.user_bounce = (+data.user_bounce / sum) * 100;
-            data.user_engage = (+data.user_engage / sum) * 100;
+    if (data) {
+        data = data.data;
+        if (data) {
+            const sum = (+data.user_open) + (+data.user_bounce) + (+data.user_engage);
+            if (sum) {
+                data.user_open = (+data.user_open / sum) * 100;
+                data.user_bounce = (+data.user_bounce / sum) * 100;
+                data.user_engage = (+data.user_engage / sum) * 100;
+            }
         }
     }
     if (error || !data) {
