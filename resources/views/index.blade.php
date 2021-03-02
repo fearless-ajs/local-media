@@ -20,6 +20,7 @@
         } else {
     ?>
     <title>Media Distribuitor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css" />
     <?php
     }
     ?>

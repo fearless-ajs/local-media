@@ -1,78 +1,58 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Button, Comment, Form, Header } from 'semantic-ui-react'
+import swal from "sweetalert";
 
-const Comments = () => (
-  <Comment.Group>
-    <Header as='h3' dividing>
-      Comments
-    </Header>
 
-    <Comment>
-      <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
-      <Comment.Content>
-        <Comment.Author as='a'>Matt</Comment.Author>
-        <Comment.Metadata>
-          <div>Today at 5:42PM</div>
-        </Comment.Metadata>
-        <Comment.Text>How artistic!</Comment.Text>
-      </Comment.Content>
-    </Comment>
+import useSWR from 'swr';
+import Skeleton from 'react-loading-skeleton';
+import {formatDistanceToNow} from 'date-fns';
 
-    <Comment>
-      <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg' />
-      <Comment.Content>
-        <Comment.Author as='a'>Elliot Fu</Comment.Author>
-        <Comment.Metadata>
-          <div>Yesterday at 12:30AM</div>
-        </Comment.Metadata>
-        <Comment.Text>
-          <p>This has been very useful for my research. Thanks as well!</p>
-        </Comment.Text>
-      </Comment.Content>
-      <Comment.Group>
-        <Comment>
-          <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/jenny.jpg' />
-          <Comment.Content>
-            <Comment.Author as='a'>Jenny Hess</Comment.Author>
-            <Comment.Metadata>
-              <div>Just now</div>
-            </Comment.Metadata>
-            <Comment.Text>Elliot you are always so right :)</Comment.Text>
-          </Comment.Content>
-        </Comment>
-      </Comment.Group>
-    </Comment>
+import {fetcher} from '../../helpers/fetcher';
+import avatar from "../../assets/img/avatar.png";
 
-    <Comment>
-      <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
-      <Comment.Content>
-        <Comment.Author as='a'>Joe Henderson</Comment.Author>
-        <Comment.Metadata>
-          <div>5 days ago</div>
-        </Comment.Metadata>
-        <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-      </Comment.Content>
-    </Comment>
-  </Comment.Group>
-)
+const Comments = ({media})=>{
+    let {data, error, mutate} = useSWR(`/api/media/${media.id}/comments`, fetcher);
+    let isLoading = !data & !error;
+
+    if (data) {
+        data = data.data;
+    }
+    if (error || !data) {
+      data = [];
+    }
+
+    return (
+        <Comment.Group>
+            <Header as='h3' dividing>
+                Comments
+            </Header>
+            {
+                isLoading
+                ? (
+                    <>
+                        <div> <Skeleton width={180} /> </div>
+                        <div> <Skeleton width={300} /> </div>
+                        <br></br>
+                        <div> <Skeleton width={180} /> </div>
+                        <div> <Skeleton width={300} /> </div>
+                    </>
+                )
+                : data.map((obj)=>(
+                    <Comment key={obj.id}>
+                        <Comment.Avatar src={avatar} />
+                        <Comment.Content>
+                            <Comment.Author as='a'>{obj.name}</Comment.Author>
+                            <Comment.Metadata>
+                                <div>{formatDistanceToNow(new Date(obj.created_at))}</div>
+                            </Comment.Metadata>
+                            <Comment.Text>
+                                <p>{obj.message}</p>
+                            </Comment.Text>
+                        </Comment.Content>
+                    </Comment>
+                ))}
+        </Comment.Group>
+    );
+}
 
 export default Comments
-
-// import React, {useState} from 'react';
-
-// import useSWR from 'swr';
-// import Skeleton from 'react-loading-skeleton';
-
-// function Comments({id}) {
-//     return (
-//         <>
-//             <div> <Skeleton width={180} /> </div>
-//             <div> <Skeleton width={300} /> </div>
-//             <br></br>
-//             <div> <Skeleton width={180} /> </div>
-//             <div> <Skeleton width={300} /> </div>
-//         </>
-//     );
-// }
-
-// export default Comments;
