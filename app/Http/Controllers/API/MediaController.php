@@ -46,6 +46,17 @@ class MediaController extends BaseController
     }
 
     /**
+     * Get latest PDF
+     */
+    public function getLatestPDF(Request $request) {
+        $media = Media::where('type', 'pdf')->orderByDesc('id')->first();
+        if (!$media) {
+            return $this->sendResponse([]);
+        }
+        return $this->sendResponse($media);
+    }
+
+    /**
      * get media comments
      * @param  Request $request
      * @param  [type]  $id      media id

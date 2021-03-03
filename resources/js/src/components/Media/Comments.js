@@ -36,20 +36,23 @@ const Comments = ({media})=>{
                         <div> <Skeleton width={300} /> </div>
                     </>
                 )
-                : data.map((obj)=>(
-                    <Comment key={obj.id}>
-                        <Comment.Avatar src={avatar} />
-                        <Comment.Content>
-                            <Comment.Author as='a'>{obj.name}</Comment.Author>
-                            <Comment.Metadata>
-                                <div>{formatDistanceToNow(new Date(obj.created_at))}</div>
-                            </Comment.Metadata>
-                            <Comment.Text>
-                                <p>{obj.message}</p>
-                            </Comment.Text>
-                        </Comment.Content>
-                    </Comment>
-                ))}
+                : data.length
+                    ? (data.map((obj)=>(
+                        <Comment key={obj.id}>
+                            <Comment.Avatar src={avatar} />
+                            <Comment.Content>
+                                <Comment.Author as='a'>{obj.name}</Comment.Author>
+                                <Comment.Metadata>
+                                    <div>{formatDistanceToNow(new Date(obj.created_at))}</div>
+                                </Comment.Metadata>
+                                <Comment.Text>
+                                    <p>{obj.message}</p>
+                                </Comment.Text>
+                            </Comment.Content>
+                        </Comment>
+                    )))
+                    : (isLoading ? null : <p>No comments </p>)
+                }
         </Comment.Group>
     );
 }

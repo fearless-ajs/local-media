@@ -35,6 +35,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], funct
         // MediaController //
         /////////////////////
         Route::get('media/all', [App\Http\Controllers\API\MediaController::class, 'getAllMedia'])->name('all_media');
+        Route::get('pdf/latest', [App\Http\Controllers\API\MediaController::class, 'getLatestPDF'])->name('latest_pdf');
         Route::get('media/{id}', [App\Http\Controllers\API\MediaController::class, 'getMedia'])->name('get_media');
         Route::get('media/{id}/comments', [App\Http\Controllers\API\MediaController::class, 'getMediaComments'])->name('get_media_comments');
         Route::post('media', [App\Http\Controllers\API\MediaController::class, 'uploadMedia'])->name('upload_media');
