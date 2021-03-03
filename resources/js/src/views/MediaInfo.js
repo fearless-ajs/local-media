@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import Skeleton from 'react-loading-skeleton';
 
 import GenerateLinkModal from '../modals/GenerateLink';
+import swal from "sweetalert";
 
 // react-bootstrap components
 import {
@@ -27,27 +28,27 @@ import Comments from '../components/Media/Comments';
 
 import Spinner from "../components/Spinner.js";
 
+const goBack = ()=>{
+  window.history.back(-1); // go to previous page
+}
 
-function MediaInfo() {
-  const [showLinkModal, setLinkModal] = useState(false);
+function MediaInfo({match}) {
   const params = useParams();
+  const [showLinkModal, setLinkModal] = useState(false);
 
   let {data: media, error} = useSWR(`/api/media/${params.id}`, fetcher);
   let isLoading = !media & !error;
 
   if (media) {
     if (!media.success) {
-      swal(media.message || "Failed to load media", {
-        closeOnClickOutside: false,
-      });
+      swal("Error", media.message || "Failed to load media", "error");
+      goBack();
     }
     media = media.data;
   }
   if (error || !media) {
     media = {};
   }
-
-  const handleClose = ()=>{setLinkModal(false);}
 
   // delete file
   const onDelete = async ()=>{
@@ -56,7 +57,7 @@ function MediaInfo() {
     axios.delete(`/api/media/${params.id}`)
     .then(r => {
       swal("Media deleted", "success");
-      window.history.back(-1); // go to previous page
+      goBack();
     });
   }
 
@@ -85,7 +86,7 @@ function MediaInfo() {
 
               <Row className="m-auto">
                 <Col xs="12" sm="6" className="vid-col p-0 mr-4">
-                  <div className="shadow mb-3 media-item" style={{height: '270px'}}>
+                  <div className="shadow mb-3 py-3 media-item" style={{}}>
                     {isLoading
                       ? <Skeleton height={200} />
                       : <Media media={media} />

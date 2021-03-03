@@ -129,7 +129,6 @@ function TableList() {
                                                                     <i className="fa fa-eye"></i>
                                                                     {media.views}
                                                                 </div>
-                                                                {/* TODO: check if pdf or video, replace with image icon / pdf icon */}
                                                                 <LazyLoadImage
                                                                     className="img-fluid"
                                                                     src={ media.type=='pdf' ? pdf_icon : multimedia_icon }

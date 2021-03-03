@@ -42,6 +42,7 @@
         "js-cookie": "^2.2.1",
         "react-lazy-load-image-component": "^1.5.1",
         "react-loading-skeleton": "^2.1.1",
+        "react-player": "^2.9.0",
         "reactstrap": "^8.9.0",
         "semantic-ui-react": "^2.0.3",
         "sweetalert": "^2.1.2",

@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { Button, Comment, Form, Header } from 'semantic-ui-react'
 import swal from "sweetalert";
 
-
 import useSWR from 'swr';
 import Skeleton from 'react-loading-skeleton';
 import {formatDistanceToNow} from 'date-fns';
