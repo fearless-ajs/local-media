@@ -36,6 +36,7 @@ function Video({path}) {
     return (
         <ReactPlayer
             width="100%"
+            controls={true}
             url={`/storage/${path}`}
         />
     );
