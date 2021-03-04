@@ -11,7 +11,7 @@ import avatar from "../../assets/img/avatar.png";
 
 const Comments = ({media})=>{
     let {data, error, mutate} = useSWR(`/api/media/${media.id}/comments`, fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;

@@ -32,7 +32,7 @@ function User() {
 
     // fetch from backend
     let { data, error, mutate } = useSWR("/api/users", fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         if (!data.success) {

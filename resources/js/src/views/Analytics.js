@@ -31,7 +31,7 @@ window.toHumanString = (v)=> !v ? "0" :_toHumanString(v)
 // 
 function TotalStats({id}) {
     let {data, error} = useSWR(`/api/media/${id}`, fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;
@@ -82,7 +82,7 @@ function TotalStats({id}) {
 // distributors
 function Distributors({id}) {
     let {data, error} = useSWR(`/api/media/${id}/distributors`, fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;

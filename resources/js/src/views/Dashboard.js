@@ -31,7 +31,7 @@ import "../assets/scss/views/Dashboard.scss";
 //
 function TotalStats(argument) {
     let {data, error, mutate} = useSWR('/api/analytics/stats', fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;
@@ -90,7 +90,7 @@ function TotalStats(argument) {
 //
 function UserBehaviour() {
     let {data, error, mutate} = useSWR('/api/analytics/behaviours', fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;
@@ -154,7 +154,7 @@ function UserBehaviour() {
 //
 function Performance(argument) {
     let {data, error, mutate} = useSWR('/api/analytics/performance', fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;
@@ -212,7 +212,7 @@ function Performance(argument) {
 //
 function TopDistributors(argument) {
     let {data, error, mutate} = useSWR('/api/analytics/distributors', fetcher);
-    let isLoading = !data & !error;
+    let isLoading = !data && !error;
 
     if (data) {
         data = data.data;

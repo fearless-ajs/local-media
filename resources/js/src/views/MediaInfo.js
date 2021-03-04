@@ -37,7 +37,7 @@ function MediaInfo({match}) {
   const [showLinkModal, setLinkModal] = useState(false);
 
   let {data: media, error} = useSWR(`/api/media/${params.id}`, fetcher);
-  let isLoading = !media & !error;
+  let isLoading = !media && !error;
 
   if (media) {
     if (!media.success) {
