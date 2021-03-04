@@ -47,7 +47,7 @@ function TableList() {
 
     if (data) {
         if (!data.success) {
-            swal(data.message);
+            swal(data.message || "Error, Couldnt fetch media list");
             data = [];
         } else {
             data = data.data;

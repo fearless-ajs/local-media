@@ -36,7 +36,7 @@ function User() {
 
     if (data) {
         if (!data.success) {
-            swal(data.message);
+            swal(data.message || "Error, Couldnt fetch users list");
             data = [];
         }
         else {
