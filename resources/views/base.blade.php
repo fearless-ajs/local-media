@@ -1,3 +1,3 @@
 
-  <base href="/"/>
-  {{-- <base href="https://loveworldbooks.com/media-distributor/public"/> --}}
+  <!-- <base href="/"/> -->
+  <base href="https://loveworldbooks.com/media-distributor/public"/>

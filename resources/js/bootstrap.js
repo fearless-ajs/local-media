@@ -24,8 +24,8 @@ window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
-// const baseURL = '/media-distributor/';
-const baseURL = '/';
+// const baseURL = '/';
+const baseURL = '/media-distributor/public';
 axios.defaults.baseURL = baseURL;
 
 // our API returns response of status >=400 for invalid inputs
