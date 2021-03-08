@@ -38,6 +38,8 @@ Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], funct
         Route::get('pdf/latest', [App\Http\Controllers\API\MediaController::class, 'getLatestPDF'])->name('latest_pdf');
         Route::get('media/{id}', [App\Http\Controllers\API\MediaController::class, 'getMedia'])->name('get_media');
         Route::get('media/{id}/comments', [App\Http\Controllers\API\MediaController::class, 'getMediaComments'])->name('get_media_comments');
+        Route::get('media/{id}/export', [App\Http\Controllers\API\MediaController::class, 'exportStats'])->name('export_stats');
+        // 
         Route::post('media', [App\Http\Controllers\API\MediaController::class, 'uploadMedia'])->name('upload_media');
         //
         Route::post('media/{id}/like', [App\Http\Controllers\API\MediaController::class, 'like'])->name('like_media');

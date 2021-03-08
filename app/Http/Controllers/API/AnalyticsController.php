@@ -132,6 +132,24 @@ class AnalyticsController extends BaseController
 
 
     /**
+     * Export as csv
+     *
+     */
+    public function exportStats(Request $request, $id)
+    {
+        if (!Media::firstWhere('id', $id)) {
+            return $this->sendError("Media not found");
+        }
+
+        $media = Media::firstWhere('id', $id);
+
+        return $this->createCSV(
+            ['ID', 'Views', 'Likes', 'Shares', 'Comments', 'User Open', 'User Bounce', 'User Engage'],
+            [$media->id, $media->views, $media->likes, $media->shares, $media->comments, $media->user_open, $media->user_bounce, $media->user_engage]
+        );
+    }
+
+    /**
      * Gets the number of views for a media in a certain time range.
      *
      * @param      $media_id    The media identifier
@@ -156,5 +174,29 @@ class AnalyticsController extends BaseController
         }
 
         return $views;
+    }
+
+
+    private function createCSV(array $columns, array $data)
+    {
+        $headers = [
+            "Content-type"          => "text/csv",
+            "Content-Disposition"   => "attachment; filename=export.csv",
+            "Pragma"                => "no-cache",
+            "Cache-Control"         => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"               => "0"
+        ];
+
+        $callback = function() use($data, $columns) {
+            $file = fopen("php://output", "w");
+
+            fputcsv($file, $columns);
+            fputcsv($file, $data);
+
+            // close stdout
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

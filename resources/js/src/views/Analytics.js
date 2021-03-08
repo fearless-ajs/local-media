@@ -145,8 +145,10 @@ function Analytics() {
     }, [1])
 
     const onExport = () => {
-        swal("Export data in what format", {
-            buttons: ["Image", "CSV"],
+        swal("Export Data as CSV").then((l) => {
+            if (l) {
+                window.location = `/api/media/${videoID}/export`;
+            }
         });
     };
 
