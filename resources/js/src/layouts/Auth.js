@@ -5,6 +5,8 @@ import Spinner from "../components/Spinner";
 import swal from 'sweetalert';
 import Cookies from 'js-cookie';
 
+import bg_image from '../assets/img/bg-01.jpg';
+
 function Admin() {
     const [isLoading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
@@ -24,7 +26,7 @@ function Admin() {
             <div className="limiter">
                 <div
                     className="container-login100"
-                    style={{ backgroundImage: "url('images/bg-01.jpg')" }}
+                    style={{ backgroundImage: `url(${bg_image})` }}
                 >
                     <div className="wrap-login100 p-t-30 p-b-50">
                         <span className="login100-form-title p-b-41">
