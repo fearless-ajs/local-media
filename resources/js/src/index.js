@@ -30,7 +30,7 @@ import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename="/media-distributor/public">
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/login" render={(props) => <AuthLayout {...props} /> } />
