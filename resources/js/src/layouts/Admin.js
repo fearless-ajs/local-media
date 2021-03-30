@@ -9,7 +9,9 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin.js";
 
 import routes from "../routes.js";
 
-import sidebarImage from "../assets/img/sidebar-3.jpg";
+// import sidebarImage from "../assets/img/sidebar-3.jpg";
+
+const sidebarImage = "./images/sidebar-3.jpg";
 
 function Admin() {
   const [image, setImage] = React.useState(sidebarImage);
