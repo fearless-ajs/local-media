@@ -291,4 +291,18 @@ class MediaController extends BaseController
         $media->delete();
         return $this->sendResponse(true);
     }
+
+
+    /**
+     * export media stats
+     *
+     * @param      \Illuminate\Http\Request  $request  The request
+     * @param      <type>                    $id       The identifier
+     *
+     * @return     array                     ( description_of_the_return_value )
+     */
+    public function exportStats(Request $request, $id)
+    {
+        return ['Failed!'];
+    }
 }
