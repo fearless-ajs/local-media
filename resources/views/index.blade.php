@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    @extends('base')
+    <base href="https://loveworldbooks.com/media-distributor/public"/>
+    {{-- <base href="/"/> --}}
 
     <?php
         if (strpos($_SERVER['REQUEST_URI'], 'login') !== false) {
