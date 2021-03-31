@@ -94,19 +94,6 @@ class AnalyticsController extends BaseController
      */
     public function getPerformance(Request $request, $media_id=-1)
     {
-        if ($media_id == -1) {
-            // if no media id specified fetch for last media
-            $media_id = Media::orderByDesc('id')->first()->id;
-        }
-        if (!Media::firstWhere('id', $media_id)) {
-            return $this->sendResponse([]);
-        }
-
-        $media = Media::firstWhere('id', $media_id);
-
-        $start_time = Carbon::parse("00:00")->format('H:i');
-        $end_time = Carbon::parse("03:00")->format('H:i');
-
         $ranges = [
             "12AM-3AM" => 0,
             "3AM-6AM" => 0,
@@ -117,6 +104,23 @@ class AnalyticsController extends BaseController
             "6PM-9PM" => 0,
             "9PM-12AM" => 0,
         ];
+
+        if ($media_id == -1) {
+            // if no media id specified fetch for last media
+            $last_media = Media::orderByDesc('id')->first();
+
+            if (!$last_media) {
+                return $this->sendResponse($ranges);;
+            }
+
+            $media_id = $last_media->id;
+        }
+
+        if (!Media::firstWhere('id', $media_id)) {
+            return $this->sendResponse($ranges);
+        }
+
+        $media = Media::firstWhere('id', $media_id);
 
         // we will calculate the views for the time ranges above
         foreach ($ranges as $range => $v) {
