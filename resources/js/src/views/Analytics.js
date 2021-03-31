@@ -147,7 +147,7 @@ function Analytics() {
     const onExport = () => {
         swal("Export Data as CSV").then((l) => {
             if (l) {
-                window.location = `/api/media/${videoID}/export`;
+                window.location = `/media-distributor/public/api/media/${videoID}/export`;
             }
         });
     };
