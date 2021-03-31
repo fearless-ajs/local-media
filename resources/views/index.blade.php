@@ -30,6 +30,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="{{ asset('css/font-awesome/font-awesome.min.css') }}" rel="stylesheet">
+
 </head>
 
 <body>

@@ -41,10 +41,10 @@ function TotalStats(argument) {
     }
 
     const metrics = [
-        ['Views', 'fas fa-eye text-warning'],
-        ['Shares', 'fas fa-share text-success'],
-        ['Comments', 'fas fa-comments text-info'],
-        ['Likes', 'fas fa-heart text-danger'],
+        ['Views', 'fa fa-eye text-warning'],
+        ['Shares', 'fa fa-share text-success'],
+        ['Comments', 'fa fa-comment text-info'],
+        ['Likes', 'fa fa-heart text-danger'],
     ];
     return (
         <Row>

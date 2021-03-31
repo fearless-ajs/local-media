@@ -41,10 +41,10 @@ function TotalStats({id}) {
     }
 
     const metrics = [
-        ['Views', 'fas fa-eye text-warning'],
-        ['Shares', 'fas fa-share text-success'],
-        ['Comments', 'fas fa-comments text-info'],
-        ['Likes', 'fas fa-heart text-danger'],
+        ['Views', 'fa fa-eye text-warning'],
+        ['Shares', 'fa fa-share text-success'],
+        ['Comments', 'fa fa-comments text-info'],
+        ['Likes', 'fa fa-heart text-danger'],
     ];
     return (
         <Row>
@@ -197,11 +197,11 @@ function Analytics() {
                                                 <Distributors id={videoID} />
                                             </div>
                                             <button className="btn btn-info" onClick={() => updateStats(videoID)}>
-                                                <i className={`fas fa-redo ${isUpdatingStat && 'fa-spin'} mr-1`}></i>
+                                                <i className={`fa fa-redo ${isUpdatingStat && 'fa-spin'} mr-1`}></i>
                                                 Update stats
                                             </button>
                                             <button onClick={onExport} className="btn btn-primary float-right">
-                                                <i className='fas fa-file-export mr-1'></i>
+                                                <i className='fa fa-file-export mr-1'></i>
                                                 Export
                                             </button>
                                         </div>

@@ -73,7 +73,7 @@ function User() {
                         className="rounded mb-2"
                         onClick={() => setNewUserModal(true)}
                     >
-                        <i className="fas fa-plus"></i> Add new user
+                        <i className="fa fa-plus"></i> Add new user
                     </Button>
                 </div>
 

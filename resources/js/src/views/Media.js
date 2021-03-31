@@ -91,7 +91,7 @@ function TableList() {
                         variant="success"
                         className="rounded mb-2"
                     >
-                        <i className="fas fa-plus"></i> Upload
+                        <i className="fa fa-plus"></i> Upload
                     </Button>
                 </div>
 
