@@ -13,27 +13,13 @@ import routes from "../routes.js";
 
 const sidebarImage = "./images/sidebar-3.jpg";
 
-function Admin() {
+function Admin({Component}) {
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
   const [hasImage, setHasImage] = React.useState(true);
   const location = useLocation();
   const mainPanel = React.useRef(null);
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            render={(props) => <prop.component {...props} />}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
+
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -47,6 +33,7 @@ function Admin() {
       element.parentNode.removeChild(element);
     }
   }, [location]);
+
   return (
     <>
       <div className="wrapper">
@@ -54,8 +41,9 @@ function Admin() {
 
         <div className="main-panel" ref={mainPanel}>
           <AdminNavbar />
+
           <div className="content">
-            <Switch>{getRoutes(routes)}</Switch>
+            <Component />
           </div>
           <Footer />
         </div>

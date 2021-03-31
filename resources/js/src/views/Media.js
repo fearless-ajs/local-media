@@ -122,7 +122,7 @@ function TableList() {
                                             ? <div className="m-auto"> Nothing here </div>
                                             : data.map((media) => (
                                                 <Col lg="3" sm="6" key={media.id}>
-                                                    <Link to={`/admin/media/${media.id}`}>
+                                                    <Link to={`/media/${media.id}`}>
                                                         <Card className="shadow card-stats position-relative">
                                                             <Card.Body className="p-1 m-0 position-relative">
                                                                 <div className="media-view-count">

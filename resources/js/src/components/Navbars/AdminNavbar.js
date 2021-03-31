@@ -101,7 +101,7 @@ function Header() {
                                 {searching ? (
                                     <form onSubmit={(e)=>{
                                         e.preventDefault()
-                                        history.push(`/admin/media/all?q=${query}`)
+                                        history.push(`/media/all?q=${query}`)
                                     }}>
                                         <input
                                             type="text"
