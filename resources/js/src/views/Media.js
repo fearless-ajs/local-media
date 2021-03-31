@@ -27,9 +27,14 @@ import "../assets/scss/views/Media.scss";
 import {fetcher} from '../helpers/fetcher';
 import Spinner from '../components/Spinner';
 
-import multimedia_icon from "../assets/img/multimedia.svg";
-import pdf_icon from "../assets/img/pdf.svg";
-import file_icon from "../assets/img/file-empty.js";
+
+// import multimedia_icon from "../assets/img/multimedia.svg";
+// import pdf_icon from "../assets/img/pdf.svg";
+// import file_icon from "../assets/img/file-empty.js";
+
+const multimedia_icon = "https://loveworldbooks.com/media-distributor/public/images/multimedia.svg";
+const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf.svg";
+const file_icon  = "../assets/img/file-empty.js";
 
 
 const useQuery = ()=>{

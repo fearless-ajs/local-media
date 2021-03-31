@@ -97,7 +97,7 @@ function MediaInfo({match}) {
                     <div className="action-btns">
                       <Button size="sm" className="p-1" onClick={()=>setLinkModal(true)}> <i className="fa fa-plus"> </i> Generate Link </Button>
                       <Button variant="danger" size="sm" className="p-1" onClick={onDelete}> <i className="fa fa-trash"> </i> Delete </Button>
-                      <Button variant="info" size="sm" className="p-1 float-right" href={`media-distributor/public/storage/${media.path}`}> <i className="fa fa-download"> </i> Download </Button>
+                      <Button variant="info" size="sm" className="p-1 float-right" href={`https://loveworldbooks.com/media-distributor/public/storage/${media.path}`}> <i className="fa fa-download"> </i> Download </Button>
                     </div>
                   ) || ""}
                 </Col>

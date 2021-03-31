@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import useSWR from 'swr';
 
-import avatar from "../assets/img/avatar.png";
 
 // react-bootstrap components
 import {
@@ -22,6 +21,9 @@ import NewUser from "../modals/NewUser.js";
 import {fetcher} from '../helpers/fetcher';
 
 import Spinner from '../components/Spinner';
+
+
+const avatar = "https://loveworldbooks.com/media-distributor/public/images/avatar.png";
 
 
 function User() {

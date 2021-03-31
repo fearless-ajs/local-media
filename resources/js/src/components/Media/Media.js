@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import ReactPlayer from 'react-player'
 
-import multimedia_icon from "../../assets/img/multimedia.svg";
-import pdf_icon from "../../assets/img/pdf.svg";
-import file_icon from "../../assets/img/file-empty.js";
+// import multimedia_icon from "../../assets/img/multimedia.svg";
+// import pdf_icon from "../../assets/img/pdf.svg";
+// import file_icon from "../../assets/img/file-empty.js";
+
+const multimedia_icon = "https://loveworldbooks.com/media-distributor/public/images/multimedia.svg";
+const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf.svg";
+const file_icon  = "../../assets/img/file-empty.js";
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
@@ -37,7 +41,7 @@ function Video({path}) {
         <ReactPlayer
             width="100%"
             controls={true}
-            url={`/storage/${path}`}
+            url={`https://loveworldbooks.com/media-distributor/public/storage/${path}`}
         />
     );
 }

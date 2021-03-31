@@ -86,7 +86,7 @@ function Users({data, filter, media_id}) {
 function getUserMediaURL(media_id, user_id) {
     const scheme = "http",
         {host} = location,
-        path = `media/${media_id}/${user_id}`;
+        path = `media-distributor/public/media/${media_id}/${user_id}`;
 
     return `${scheme}://${host}/${path}`;
 }
