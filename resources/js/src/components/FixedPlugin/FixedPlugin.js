@@ -21,10 +21,10 @@ import React, { Component } from "react";
 import { Dropdown, Badge, Button, Form } from "react-bootstrap";
 
 
-const sideBarImage1 = "./images/sidebar-1.jpg";
-const sideBarImage2 = "./images/sidebar-2.jpg";
-const sideBarImage3 = "./images/sidebar-3.jpg";
-const sideBarImage4 = "./images/sidebar-4.jpg";
+const sideBarImage1 = "/images/sidebar-1.jpg";
+const sideBarImage2 = "/images/sidebar-2.jpg";
+const sideBarImage3 = "/images/sidebar-3.jpg";
+const sideBarImage4 = "/images/sidebar-4.jpg";
 
 
 function FixedPlugin({

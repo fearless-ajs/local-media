@@ -26,7 +26,7 @@ function Admin() {
             <div className="limiter">
                 <div
                     className="container-login100"
-                    style={{ backgroundImage: `url(${bg_image})` }}
+                    style={{ backgroundImage: `url(https://loveworldbooks.com/media-distributor/public/images/bg-01.jpg)` }}
                 >
                     <div className="wrap-login100 p-t-30 p-b-50">
                         <span className="login100-form-title p-b-41">
