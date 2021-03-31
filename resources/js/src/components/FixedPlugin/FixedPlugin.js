@@ -20,10 +20,12 @@ import React, { Component } from "react";
 
 import { Dropdown, Badge, Button, Form } from "react-bootstrap";
 
-import sideBarImage1 from "../../assets/img/sidebar-1.jpg";
-import sideBarImage2 from "../../assets/img/sidebar-2.jpg";
-import sideBarImage3 from "../../assets/img/sidebar-3.jpg";
-import sideBarImage4 from "../../assets/img/sidebar-4.jpg";
+
+const sideBarImage1 = "./images/sidebar-1.jpg";
+const sideBarImage2 = "./images/sidebar-2.jpg";
+const sideBarImage3 = "./images/sidebar-3.jpg";
+const sideBarImage4 = "./images/sidebar-4.jpg";
+
 
 function FixedPlugin({
   hasImage,
@@ -33,6 +35,8 @@ function FixedPlugin({
   image,
   setImage,
 }) {
+
+
   // constructor(props) {
   //   super(props);
   //   this.state = {
