@@ -301,8 +301,8 @@ class MediaController extends BaseController
      *
      * @return     array                     ( description_of_the_return_value )
      */
-    public function exportStats(Request $request, $id)
-    {
-        return ['Failed!'];
-    }
+    // public function exportStats(Request $request, $id)
+    // {
+    //     return ['Failed!'];
+    // }
 }
