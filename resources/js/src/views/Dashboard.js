@@ -64,7 +64,7 @@ function TotalStats(argument) {
                                         <Card.Title as="h4">
                                             {isLoading
                                                 ? <Spinner type='list'/>
-                                                : (data && toHumanString(data[v[0].toLowerCase()]))
+                                                : (data && toHumanString(data[v[0].toLowerCase()] | 0))
                                             }
                                         </Card.Title>
                                     </div>
