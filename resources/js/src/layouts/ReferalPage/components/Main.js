@@ -89,7 +89,11 @@ const Main = ({ match, }) => {
 
     const submitComment = (e) => {
         e.preventDefault()
-        postComment(media_id, comment)
+        postComment(media_id, {
+            name,
+            email,
+            comment,
+        })
         setComments([{ name, message: comment, created_at: new Date() }, ...comments])
         setComment('')
     }
@@ -199,12 +203,14 @@ const Main = ({ match, }) => {
 
                     <Row>
                         <Col md={6}>
-                            <Card style={{width: "80%", height: "fill"}} className='card mx-auto my-3'>
-                                <Card.Img variant="top" src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/02/28163447/36C3-PDF-encryption-featured2.jpg" />
-                                <Card.Body>
-                                    <Card.Title>{pdf?.name || "Loading..."}</Card.Title>
-                                </Card.Body>
-                            </Card>
+                            <a href={`https://loveworldbooks.com/media-distributor/public/storage/${pdf?.path}`}>
+                                <Card style={{width: "80%", height: "fill"}} className='card mx-auto my-3'>
+                                    <Card.Img variant="top" src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/02/28163447/36C3-PDF-encryption-featured2.jpg" />
+                                    <Card.Body>
+                                        <Card.Title>{pdf?.name || "Loading..."}</Card.Title>
+                                    </Card.Body>
+                                </Card>
+                            </a>
                         </Col>
 
                         <Col md={6}>
@@ -223,7 +229,7 @@ const Main = ({ match, }) => {
                                     <p className="legend">Legend 3</p>
                                 </div>
                             </Carousel>
-                            <Card.Footer>
+                            <Card.Footer className="pb-4">
                                 <p>Flyer</p>
                             </Card.Footer>
                             </Card>
