@@ -9,7 +9,7 @@ const Comments = ({ comments}) => {
             <Row>
                 <Col md={12} sm={12}>
                     { comments.map(({name, message, created_at}, i) => (
-                        <Comment.Group size='small'>
+                        <Comment.Group size='small' key={created_at}>
                         <Comment>
                             <Comment.Avatar as='span' src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
                             <Comment.Content>
