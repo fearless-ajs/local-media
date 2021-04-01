@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Image } from 'react-bootstrap'
-import pic from './LWPL2-Logo.png'
+
+const pic = "https://loveworldbooks.com/media-distributor/public/images/LWPL2-Logo.png";
 
 const Header = () => {
     return (
