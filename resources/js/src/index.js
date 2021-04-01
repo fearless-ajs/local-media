@@ -18,13 +18,14 @@ import MediaInfo from "./views/MediaInfo.js";
 
 import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
-
+import ReferalPage from './layouts/ReferalPage/index.js';
 
 ReactDOM.render(
   <BrowserRouter basename="/media-distributor/public">
     <Switch>
       <Route path="/login" render={(props) => <AuthLayout {...props} /> } />
 
+      <Route path="/media/:media_id/:user_id" component={ReferalPage} />
       <Route path="/media/all" render={(props) => <AdminLayout Component={Media} {...props} /> } />
       <Route path="/media/:id" render={(props) => <AdminLayout Component={MediaInfo} {...props} /> } />
       <Route path="/dashboard" render={(props) => <AdminLayout Component={Dashboard} {...props} /> } />
