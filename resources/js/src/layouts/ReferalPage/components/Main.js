@@ -29,12 +29,17 @@ const Main = ({ match, }) => {
     const { media_id, user_id } = match.params
 
     const nameFromState = localStorage.getItem('userDetails') && JSON.parse(localStorage.getItem('userDetails')).name
+    const emailFromState = localStorage.getItem('userDetails') && JSON.parse(localStorage.getItem('userDetails')).email
 
 
     useEffect(() => {
-        localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : setShow(true)
+        const user_details = JSON.parse(localStorage.getItem('userDetails') || "{}");
+        if (!user_details.name || !user_details.email) {
+            setShow(true)
+        }
 
         setName(nameFromState)
+        setEmail(emailFromState)
 
         const liked = localStorage.getItem(`likes:${media_id}`) === 'true';
         if (liked) {
