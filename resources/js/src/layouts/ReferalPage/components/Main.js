@@ -126,7 +126,8 @@ const Main = ({ match, }) => {
                                 width='100%'
                                 height='50vh'
                                 controls={true}
-                                url='https://www.youtube.com/watch?v=3LOEGS4qcRM&list=PLDlWc9AfQBfZGZXFb_1tcRKwtCavR7AfT'
+                                /*url='https://www.youtube.com/watch?v=3LOEGS4qcRM&list=PLDlWc9AfQBfZGZXFb_1tcRKwtCavR7AfT'*/
+                                url={`https://loveworldbooks.com/media-distributor/public/storage/${data?.path}`}
                             />
                         </Col>
                     </Row>
