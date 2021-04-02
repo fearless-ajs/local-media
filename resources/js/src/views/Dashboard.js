@@ -138,8 +138,12 @@ function UserBehaviour() {
                         <span title="Users that open the media">
                             <i className="fas fa-circle text-info"></i> Open
                         </span>
-                        <i className="fas fa-circle text-danger"></i> Bounce
-                        <i className="fas fa-circle text-warning"></i> Engage
+                        <span title="Users that dont engage with the media">
+                            <i className="fas fa-circle text-danger"></i> Bounce
+                        </span>
+                        <span title="Users that either like or comment">
+                            <i className="fas fa-circle text-warning"></i> Engage
+                        </span>
                     </div>
                 </Card.Body>
             </Card>
