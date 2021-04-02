@@ -25,16 +25,17 @@ const Main = ({ match, }) => {
     const [played, setPlayed] = useState(false)
     const [share, setShare] = useState(false)
     const [pdf, setPdf] = useState({})
+    // 
+    const [likesCount, setLikesCount] = useState(0)
 
     const { media_id, user_id } = match.params
 
-    const nameFromState = localStorage.getItem('userDetails') && JSON.parse(localStorage.getItem('userDetails')).name
-    const emailFromState = localStorage.getItem('userDetails') && JSON.parse(localStorage.getItem('userDetails')).email
-
+    const userDetails = JSON.parse(localStorage.getItem('userDetails') || "{}")
+    const nameFromState = userDetails.name
+    const emailFromState = userDetails.email
 
     useEffect(() => {
-        const user_details = JSON.parse(localStorage.getItem('userDetails') || "{}");
-        if (!user_details.name || !user_details.email) {
+        if (!nameFromState || !emailFromState) {
             setShow(true)
         }
 
@@ -50,6 +51,7 @@ const Main = ({ match, }) => {
             .then((d) => {
                 const media_title = d?.name || document.title;
                 setData(d)
+                setLikesCount(d.likes)
                 document.title = media_title;
             })
             .catch(({ message }) => swal("Error", message, 'error'));
@@ -77,6 +79,7 @@ const Main = ({ match, }) => {
         const liked = localStorage.getItem(`likes:${media_id}`) === 'true';
         if (liked) return;
         setLike(true);
+        setLikesCount(likesCount + 1);
         localStorage.setItem(`likes:${media_id}`, 'true');
         recordMediaStat(media_id, 'like')
     }
@@ -151,7 +154,7 @@ const Main = ({ match, }) => {
                             </div>
                             <div className='icon'>
                                 <span onClick={handleIcon}>
-                                    <ThumbUpAltIcon style={{ "cursor": "pointer", color: like ? "blue" : '' }} /> <span>{toHumanString(data?.likes|0)}</span>
+                                    <ThumbUpAltIcon style={{ "cursor": "pointer", color: like ? "blue" : '' }} /> <span>{toHumanString(likesCount)}</span>
                                 </span>
                             </div>
                             <div className='icon'>
