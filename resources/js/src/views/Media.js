@@ -34,7 +34,7 @@ import Spinner from '../components/Spinner';
 
 const multimedia_icon = "https://loveworldbooks.com/media-distributor/public/images/multimedia.svg";
 const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf.svg";
-const file_icon  = "../assets/img/file-empty.js";
+import file_icon from "../assets/img/file-empty.js";
 
 
 const useQuery = ()=>{
@@ -137,7 +137,7 @@ function TableList() {
                                                                 <LazyLoadImage
                                                                     className="img-fluid"
                                                                     src={ media.type=='pdf' ? pdf_icon : multimedia_icon }
-                                                                    onError={(ev) => { ev.target.src = file_icon; }}
+                                                                    onError={({target}) => { target.src = file_icon; }}
                                                                 />
                                                             </Card.Body>
 
