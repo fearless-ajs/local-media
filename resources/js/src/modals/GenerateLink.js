@@ -84,11 +84,12 @@ function Users({data, filter, media_id}) {
  * @return  {string}            media URL
  */
 function getUserMediaURL(media_id, user_id) {
-    const scheme = "http",
+    const scheme = location.protocol,
         {host} = location,
-        path = `media-distributor/public/media/${media_id}/${user_id}`;
+        subdir = "media-distributor/public",
+        path = `${subdir}/media/${media_id}/${user_id}`;
 
-    return `${scheme}://${host}/${path}`;
+    return `${scheme}//${host}/${path}`;
 }
 
 
