@@ -26,7 +26,7 @@ export const getComments = async (media_id) => {
 }
 
 export const recordVideoView = (media_id, user_id) => {
-    const key = `view:${media_id}`
+    const key = `view:${media_id}:${user_id}`
     if (localStorage.getItem(key)) return
     localStorage.setItem(key, media_id)
     axios.post(`/api/media/${media_id}/${user_id}/view`)
