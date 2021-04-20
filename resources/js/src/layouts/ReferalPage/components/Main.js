@@ -14,6 +14,26 @@ import { Carousel } from 'react-responsive-carousel';
 import Share from './Share';
 import Modals from './Modals';
 
+
+const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf.svg";
+
+
+const MediaComponent = ({data, recordPlay})=> {
+    if (data?.type == "pdf") {
+        return <img src={pdf_icon} height="250px" className="ml-auto" />
+    }
+
+    return <ReactPlayer
+        className='justify-content-md-center'
+        onPlay={recordPlay}
+        width='100%'
+        height='50vh'
+        controls={true}
+        url={`https://loveworldbooks.com/media-distributor/public/storage/${data?.path}`}
+    />
+}
+
+
 const Main = ({ match, }) => {
     const [like, setLike] = useState(false)
     const [show, setShow] = useState(false)
@@ -126,16 +146,16 @@ const Main = ({ match, }) => {
             <div className="row justify-content-md-center">
                 <div className="divv col-12 col-md-8 col-lg-8 col-xl-6 col-sm-12 m-auto px-3">
                     <Row>
-                        <Col md={12} className='video'>
-                            <ReactPlayer
+                        <Col md={12} className='video text-center'>
+                            <MediaComponent data={data} recordPlay={recordPlay} />
+                            {/*<ReactPlayer
                                 className='justify-content-md-center'
                                 onPlay={recordPlay}
                                 width='100%'
                                 height='50vh'
                                 controls={true}
-                                /*url='https://www.youtube.com/watch?v=3LOEGS4qcRM&list=PLDlWc9AfQBfZGZXFb_1tcRKwtCavR7AfT'*/
                                 url={`https://loveworldbooks.com/media-distributor/public/storage/${data?.path}`}
-                            />
+                            />*/}
                         </Col>
                     </Row>
 
