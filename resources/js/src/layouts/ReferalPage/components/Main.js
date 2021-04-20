@@ -225,31 +225,29 @@ const Main = ({ match, }) => {
                     <hr />
 
                     <Row>
-                        <Col md={6}>
-                            <a href={`https://loveworldbooks.com/media-distributor/public/storage/${pdf?.path}`}>
-                                <Card style={{width: "80%", height: "fill"}} className='card mx-auto my-3'>
-                                    <Card.Img variant="top" src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/02/28163447/36C3-PDF-encryption-featured2.jpg" />
-                                    <Card.Body>
-                                        <Card.Title>{pdf?.name || "Loading..."}</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                            </a>
-                        </Col>
 
-                        <Col md={6}>
+                        <Col md={12}>
                             <Card style={{width: "80%"}} className=' mx-auto my-3'>
                             <Carousel style={{width: "80%"}} showStatus={false} showThumbs={false}>
                                 <div>
-                                    <img src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/02/28163447/36C3-PDF-encryption-featured2.jpg" />
-                                    <p className="legend">Legend 1</p>
+                                    <img src="https://loveworldbooks.com/media-distributor/public/images/1.jpeg" />
+                                    <p className="legend"></p>
                                 </div>
                                 <div>
-                                    <img src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/02/28163447/36C3-PDF-encryption-featured2.jpg" />
-                                    <p className="legend">Legend 2</p>
+                                    <img src="https://loveworldbooks.com/media-distributor/public/images/2.jpeg" />
+                                    <p className="legend"></p>
                                 </div>
                                 <div>
-                                    <img src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/02/28163447/36C3-PDF-encryption-featured2.jpg" />
-                                    <p className="legend">Legend 3</p>
+                                    <img src="https://loveworldbooks.com/media-distributor/public/images/3.jpeg" />
+                                    <p className="legend"></p>
+                                </div>
+                                <div>
+                                    <img src="https://loveworldbooks.com/media-distributor/public/images/4.jpeg" />
+                                    <p className="legend"></p>
+                                </div>
+                                <div>
+                                    <img src="https://loveworldbooks.com/media-distributor/public/images/5.jpeg" />
+                                    <p className="legend"></p>
                                 </div>
                             </Carousel>
                             <Card.Footer className="pb-4">
