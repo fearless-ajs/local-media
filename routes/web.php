@@ -23,16 +23,15 @@ Route::get('/media/:media_id/:user_id', function () {
     return view('index');
 })->name('dashboard');
 
+
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/', function () {
-        return view('index');
-    })->name('dashboard');
-
-
-    Route::fallback(function () {
-        return view('index');
-    });
+    Route::get('/', function () { return view('index'); })->name('dashboard');
+    Route::get('/media/all', function () { return view('index'); });
+    Route::get('/media/:id', function () { return view('index'); });
+    Route::get('/dashboard', function () { return view('index'); });
+    Route::get('/user', function () { return view('index'); });
+    Route::get('/analytics', function () { return view('index'); });
 
 });
 
