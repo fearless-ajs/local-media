@@ -237,11 +237,11 @@ class MediaController extends BaseController
         $user = $request->user();
         $validator = Validator::make($request->all(), [
             'name' => 'required | string',
-            'media_file' => 'required | mimes:mp4,webm,3gp,pdf,3gpp',
+            'media_file' => 'required | mimes:mp4,webm,3gp,pdf,3gpp,mpga,wav,mp3',
         ]);
         if ($validator->fails()) {
             $err_msg = $request->name
-                ? 'Uploaded media must be either a video or pdf file'
+                ? 'Uploaded media must be either a video, music pdf file'
                 : 'Missing required field';
             return $this->sendError($err_msg, $validator->errors()->all(), 422);
         }
