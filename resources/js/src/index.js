@@ -21,6 +21,7 @@ import AuthLayout from "./layouts/Auth.js";
 import ReferalPage from './layouts/ReferalPage/index.js';
 
 ReactDOM.render(
+  /*<BrowserRouter basename="/">*/
   <BrowserRouter basename="/media-distributor/public">
     <Switch>
       <Route path="/login" render={(props) => <AuthLayout {...props} /> } />
