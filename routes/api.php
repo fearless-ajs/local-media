@@ -25,6 +25,9 @@ Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], funct
     Route::get('guests', [App\Http\Controllers\API\UserController::class, 'getGuests'])->name('get_guests');
     Route::post('add_guest_data', [App\Http\Controllers\API\UserController::class, 'addGuest'])->name('add_guest_data');
 
+    // send download link
+    Route::get('send_link', [App\Http\Controllers\API\MediaController::class, 'sendLink'])->name('send_download_link');
+
     /////////////////////
     // MediaController //
     /////////////////////

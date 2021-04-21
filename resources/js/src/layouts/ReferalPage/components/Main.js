@@ -123,8 +123,10 @@ const Main = ({ match, }) => {
     }
 
     const handleDownload = () => {
+        if (!data?.id) return swal("Media not loaded");
         // window.location.href = `/storage/${data?.path}`
-        window.location.href = `https://loveworldbooks.com/media-distributor/public/storage/${data?.path}`
+        // window.location.href = `https://loveworldbooks.com/media-distributor/public/storage/${data?.path}`
+        window.location.href = `https://loveworldbooks.com/media-distributor/public/api/send_link?path=${data?.path}&email=${email}&media_name=${data.name}`;
     }
 
     const recordPlay = () => {

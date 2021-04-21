@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 use App\Models\User;
@@ -294,15 +295,33 @@ class MediaController extends BaseController
 
 
     /**
-     * export media stats
+     * Sends a download link to user.
      *
      * @param      \Illuminate\Http\Request  $request  The request
-     * @param      <type>                    $id       The identifier
-     *
-     * @return     array                     ( description_of_the_return_value )
      */
-    // public function exportStats(Request $request, $id)
-    // {
-    //     return ['Failed!'];
-    // }
+    public function sendLink(Request $request)
+    {
+        $user = $request->user();
+        $validator = Validator::make($request->all(), [
+            'path' => 'required | string',
+            'email' => 'required | email',
+            'media_name' => 'required | string',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+
+        $data = [
+            'path' => $request->path,
+            'name' => explode("@", $request->email)[0],
+            'media_name' => $request->media_name
+        ];
+        Mail::send('mail', $data, function($message) use($request, $data) {
+            $message->to($request->email, $data['name'])->subject('Media download link');
+            $message->from('no-reply@loveworldbooks.com','Loveworld Publishing');
+        });
+
+        return "Download link sent to your email ({$request->email})";
+    }
+
 }
