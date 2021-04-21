@@ -1,5 +1,6 @@
 import React, {useState, useRef} from "react";
 import {Modal, Button} from 'react-bootstrap';
+import {humanFileSize} from '../helpers/utils';
 
 import swal from "sweetalert";
 
@@ -57,6 +58,8 @@ function UploadMedia({show, onClose, onMutate}) {
 }
 
 
+
+
 /**
  * Uploads a file.
  *
@@ -67,6 +70,20 @@ function UploadMedia({show, onClose, onMutate}) {
 async function uploadFile([name, ref], callback) {
     const input = ref.current;
     const file = input.files[0];
+
+    if (!file) {
+        callback(false);
+        return swal("Select file to upload");
+    }
+
+    const fileSize = humanFileSize(file.size),
+        sizeInMB = file.size / 1024 / 1024;
+
+    if (sizeInMB > 1024) {
+        callback(false);
+        return swal(`File too large (${fileSize}), max file size is 1GB (1024MB)`);
+    }
+
 
     let form = new FormData();
     form.append('name', name);
