@@ -97,9 +97,9 @@ function UserBehaviour() {
         if (data) {
             const sum = (+data.user_open) + (+data.user_bounce) + (+data.user_engage);
             if (sum) {
-                data.user_open = (+data.user_open / sum) * 100;
-                data.user_bounce = (+data.user_bounce / sum) * 100;
-                data.user_engage = (+data.user_engage / sum) * 100;
+                data.user_open = ((+data.user_open / sum) * 100).toFixed(1);
+                data.user_bounce = ((+data.user_bounce / sum) * 100).toFixed(1);
+                data.user_engage = ((+data.user_engage / sum) * 100).toFixed(1);
             }
         }
     }
@@ -228,7 +228,7 @@ function TopDistributors(argument) {
             <Card className="shadow cursor-pointer" onClick={()=>mutate()}>
                 <Card.Header>
                     <Card.Title as="h4">
-                        Top 10 Distribuitors
+                        Top 10 Distributors
                     </Card.Title>
                 </Card.Header>
                 <Card.Body>
