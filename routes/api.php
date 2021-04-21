@@ -21,6 +21,10 @@ Route::group(['middleware' => ['cors', 'json.response', 'throttle:60,1']], funct
     // auth
     Route::post('login', [AuthController::class, 'login']);
 
+    // add guest data
+    Route::get('guests', [App\Http\Controllers\API\UserController::class, 'getGuests'])->name('get_guests');
+    Route::post('add_guest_data', [App\Http\Controllers\API\UserController::class, 'addGuest'])->name('add_guest_data');
+
     /////////////////////
     // MediaController //
     /////////////////////

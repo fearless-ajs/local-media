@@ -3,6 +3,13 @@
 
 // axios is global, see resources/js/bootstrap.js
 
+export const addUserToDB = async (name, email) => {
+    axios.post(`/api/add_guest_data`, {
+        name,
+        email,
+    })
+}
+
 export const recordMediaStat = async (media_id, route) => {
     if (!['like', 'open', 'bounce', 'engage'].includes(route)) return
     if (localStorage.getItem(`${route}:${media_id}`)) return

@@ -5,7 +5,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ShareIcon from '@material-ui/icons/Share';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { getMediaObject, postComment, recordMediaStat, getComments, getLatestPdf } from '../helpers/Helper';
+import { getMediaObject, postComment, recordMediaStat, getComments, getLatestPdf, addUserToDB } from '../helpers/Helper';
 import Comments from './Comments';
 import swal from '@sweetalert/with-react';
 import { toHumanString } from 'human-readable-numbers'
@@ -107,6 +107,7 @@ const Main = ({ match, }) => {
     const handleClose = (e) => {
         e.preventDefault()
         localStorage.setItem('userDetails', JSON.stringify({ name, email }))
+        addUserToDB(name, email);
         setShow(false)
     }
 
@@ -227,32 +228,26 @@ const Main = ({ match, }) => {
                     <Row>
 
                         <Col md={12}>
-                            <Card style={{width: "80%"}} className=' mx-auto my-3'>
-                            <Carousel style={{width: "80%"}} showStatus={false} showThumbs={false}>
+                            <Card style={{width: "100%"}} className=' mx-auto my-3'>
+                            <Carousel style={{width: "100%"}} showStatus={false} showThumbs={false}>
                                 <div>
                                     <img src="https://loveworldbooks.com/media-distributor/public/images/1.jpeg" />
-                                    <p className="legend"></p>
                                 </div>
                                 <div>
                                     <img src="https://loveworldbooks.com/media-distributor/public/images/2.jpeg" />
-                                    <p className="legend"></p>
                                 </div>
                                 <div>
                                     <img src="https://loveworldbooks.com/media-distributor/public/images/3.jpeg" />
-                                    <p className="legend"></p>
                                 </div>
                                 <div>
                                     <img src="https://loveworldbooks.com/media-distributor/public/images/4.jpeg" />
-                                    <p className="legend"></p>
                                 </div>
                                 <div>
                                     <img src="https://loveworldbooks.com/media-distributor/public/images/5.jpeg" />
-                                    <p className="legend"></p>
                                 </div>
                             </Carousel>
-                            <Card.Footer className="pb-4">
-                                <p>Flyer</p>
-                            </Card.Footer>
+                            {/*<Card.Footer className="pb-4">
+                            </Card.Footer>*/}
                             </Card>
                         </Col>
                     </Row>

@@ -7,6 +7,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
+use App\Models\Guest;
 
 class UserController extends BaseController
 {
@@ -43,6 +44,35 @@ class UserController extends BaseController
         ]);
 
         return $this->sendResponse(true, "User created successfully");
+    }
+
+
+    /**
+     * Adds a guest user to DB.
+     *
+     * @param      \Illuminate\Http\Request  $request  The request
+     */
+    public function addGuest(Request $request)
+    {
+        if (!Guest::firstWhere('email', $request->email)) {
+            Guest::create([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+        }
+    }
+
+
+    /**
+     * Gets the guests.
+     *
+     * @param      \Illuminate\Http\Request  $request  The request
+     *
+     * @return     <type>                    The guests.
+     */
+    public function getGuests(Request $request)
+    {
+        return $this->sendResponse(Guest::orderByDesc('id')->get());
     }
 
 
