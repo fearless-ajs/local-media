@@ -17,6 +17,7 @@
 */
 import Dashboard from "./views/Dashboard.js";
 import Users from "./views/Users.js";
+import Guests from "./views/Guests.js";
 import Media from "./views/Media.js";
 import Analytics from "./views/Analytics.js";
 import MediaInfo from "./views/MediaInfo.js";
@@ -50,6 +51,13 @@ const dashboardRoutes = [
     icon: "nc-icon nc-chart-pie-36",
     component: Analytics,
     layout: "/admin",
+  },
+  {
+    path: "/guests",
+    name: "Guests",
+    icon: "nc-icon nc-circle-09",
+    component: Guests,
+    layout: "/guests",
   },
 
   // 

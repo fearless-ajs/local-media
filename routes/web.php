@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/media/{id}', function () { return view('index'); });
     Route::get('/dashboard', function () { return view('index'); });
     Route::get('/user', function () { return view('index'); });
+    Route::get('/guests', function () { return view('index'); });
     Route::get('/analytics', function () { return view('index'); });
 
 });
