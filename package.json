@@ -51,6 +51,7 @@
         "date-fns": "^2.18.0",
         "human-readable-numbers": "^0.9.5",
         "js-cookie": "^2.2.1",
+        "react-circular-progressbar": "^2.0.4",
         "react-lazy-load-image-component": "^1.5.1",
         "react-loading-skeleton": "^2.1.1",
         "react-player": "^2.9.0",
