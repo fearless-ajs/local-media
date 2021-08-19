@@ -15,12 +15,13 @@ import Share from './Share';
 import Modals from './Modals';
 
 
-const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf.svg";
+// const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf.svg";
+const pdf_icon = "https://loveworldbooks.com/media-distributor/public/images/pdf-thubnail.jpeg";
 
 
 const MediaComponent = ({data, recordPlay})=> {
     if (data?.type == "pdf") {
-        return <img src={pdf_icon} height="250px" className="ml-auto" />
+        return <img src={pdf_icon} height="300px" width="500px" className="ml-auto" />
     }
 
     return <ReactPlayer
@@ -127,6 +128,7 @@ const Main = ({ match, }) => {
         // window.location.href = `/storage/${data?.path}`
         // window.location.href = `https://loveworldbooks.com/media-distributor/public/storage/${data?.path}`
         window.location.href = `https://loveworldbooks.com/media-distributor/public/api/send_link?path=${data?.path}&email=${email}&media_name=${data.name}`;
+        return swal("Download link sent to your email");
     }
 
     const recordPlay = () => {
