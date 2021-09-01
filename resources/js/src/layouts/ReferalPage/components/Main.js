@@ -35,6 +35,7 @@ const MediaComponent = ({data, recordPlay})=> {
 }
 
 
+
 const Main = ({ match, }) => {
     const [like, setLike] = useState(false)
     const [show, setShow] = useState(false)
@@ -46,7 +47,7 @@ const Main = ({ match, }) => {
     const [played, setPlayed] = useState(false)
     const [share, setShare] = useState(false)
     const [pdf, setPdf] = useState({})
-    // 
+    //
     const [likesCount, setLikesCount] = useState(0)
 
     const { media_id, user_id } = match.params

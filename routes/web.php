@@ -19,7 +19,7 @@ use App\Http\Controllers\AuthController;
 Route::get('/login', [AuthController::class, 'loginView'])->name('login');
 
 // no auth required
-Route::get('/media/{media_id}/{user_id}', function () {
+Route::get('/media/{media_id}/{user_slug}', function () {
     return view('index');
 });
 

@@ -1,6 +1,6 @@
 import React, {useState, useRef} from "react";
 import {Modal, Button, Row, Col} from 'react-bootstrap';
-  
+
 import useSWR from 'swr';
 
 import swal from "sweetalert";
@@ -10,10 +10,10 @@ import Spinner from '../components/Spinner.js';
 
 import "../assets/scss/views/GenerateLinkModal.scss";
 
-function GenerateLinkModal({show, media_id, onClose}) {
+function GenerateLinkModal({show, media_id, media_slug, onClose}) {
     let {data: users, error} = useSWR('/api/users', fetcher);
     const isLoading = !error && !users;
-    // 
+    //
     const [filter, setFilter] = useState("");
 
     if (users) users = users.data;
@@ -64,8 +64,8 @@ function Users({data, filter, media_id}) {
             <Col md="4"><p> {u.name} </p></Col>
             <Col>
                 <span className="btn btn-link border border-info p-1 rounded d-block">
-                    <a target="_blank" href={getUserMediaURL(media_id, u.id)} className="text-success d-block">
-                        {getUserMediaURL(media_id, u.id)}
+                    <a target="_blank" href={getUserMediaURL(media_id, u.id, u.slug)} className="text-success d-block">
+                        {getUserMediaURL(media_id, u.id, u.slug)}
                     </a>
                 </span>
             </Col>
@@ -81,13 +81,14 @@ function Users({data, filter, media_id}) {
  * @param   {number}  media_id  [media id]
  * @param   {number}  user_id   [user id]
  *
+ * @param user_slug
  * @return  {string}            media URL
  */
-function getUserMediaURL(media_id, user_id) {
+function getUserMediaURL(media_id, user_id, user_slug) {
     const scheme = location.protocol,
         {host} = location,
         subdir = "media-distributor/public",
-        path = `${subdir}/media/${media_id}/${user_id}`;
+        path = `${subdir}/media/${media_id}/${user_slug}`;
 
     return `${scheme}//${host}/${path}`;
 }

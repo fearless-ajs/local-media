@@ -33,14 +33,20 @@ class UserController extends BaseController
             'name' => 'required | string | max:255',
             'email' => 'required | email | max:255 | unique:users',
         ]);
+
         if ($validator->fails()) {
             return $this->sendError('Input Validation Failed', $validator->errors()->all(), 422);
         }
 
+        if (User::where('name', $request->name)->first()){
+            return $this->sendError('User Name Already Exist!', $validator->errors()->all(), 422);
+        }
+
         // create user
         User::create([
-            'name' => $request->name,
+            'name'  => $request->name,
             'email' => $request->email,
+            'slug'  => Str::slug($request->name)
         ]);
 
         return $this->sendResponse(true, "User created successfully");
@@ -85,5 +91,15 @@ class UserController extends BaseController
     {
         User::where('id', $id)->delete();
         return $this->sendResponse(true, "User deleted successfully");
+    }
+
+    public function getUserBySlug(Request $request, $slug)
+    {
+        $user = User::where('slug', $slug)->first();
+
+        if (!$user) {
+            return $this->sendError('User Not Found', [], 404);
+        }
+        return $this->sendResponse($user);
     }
 }

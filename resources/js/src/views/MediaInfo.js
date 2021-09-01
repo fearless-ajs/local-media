@@ -112,7 +112,7 @@ function MediaInfo({match}) {
               </Card.Body>
             </Card>
           </Col>
- 
+
         </Row>
       </Container>
     </>

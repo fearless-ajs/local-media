@@ -5,8 +5,20 @@ import Main from "./components/Main";
 import './index.scss';
 // import './bootstrap.min(3).css'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { fetchUser } from './helpers/Helper';
+import swal from "@sweetalert/with-react";
+
 
 function App({match}) {
+    const { media_id, user_slug } = match.params
+
+    const user = fetchUser(user_slug)
+        .then((user) => {
+            return user;
+        }).catch(({ message }) => swal("Error", message, 'error'));
+
+    const params = { media_id, user_id: user.id}
+
     return (
         <>
             <link
@@ -18,7 +30,7 @@ function App({match}) {
 
             <Header />
             <main className="referal-page">
-                <Main match={match} />
+                <Main match={params} />
             </main>
             <Footer />
         </>

@@ -1,5 +1,4 @@
 /*!
-
 =========================================================
 * Light Bootstrap Dashboard React - v2.0.0
 =========================================================
@@ -9,7 +8,6 @@
 * Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
 
 * Coded by Creative Tim
-
 =========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -21,7 +19,6 @@ import Guests from "./views/Guests.js";
 import Media from "./views/Media.js";
 import Analytics from "./views/Analytics.js";
 import MediaInfo from "./views/MediaInfo.js";
-
 
 const dashboardRoutes = [
   {
@@ -60,7 +57,7 @@ const dashboardRoutes = [
     layout: "/guests",
   },
 
-  // 
+  //
   {
     icon: null,
     path: "/media/:id",
