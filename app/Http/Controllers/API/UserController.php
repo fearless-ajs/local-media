@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Guest;
@@ -101,5 +102,15 @@ class UserController extends BaseController
             return $this->sendError('User Not Found', [], 404);
         }
         return $this->sendResponse($user);
+    }
+
+    public function generateSlug(){
+        $users = User::all();
+        foreach ($users as $user){
+            User::where('id', $user->id)->update([
+               'slug' =>  Str::slug($user->name)
+            ]);
+        }
+        return $this->sendResponse('Successful');
     }
 }

@@ -66,8 +66,7 @@ export const getMediaObject = async (media_id, user_id) => {
 
 export const fetchUser = async (user_slug) => {
     const { data } = await axios.get(`/api/user/${user_slug}`);
-    const { success, data: d, message } = data;
-    return d;
+    return data;
 }
 
 export const getLatestPdf = async () => {
